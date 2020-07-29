@@ -111,7 +111,7 @@ class TabHeader extends React.Component {
           ? strings.profile.doing
           : strings.profile.done;
       return (
-        <li className={activeClass === index ? "active" : ""}>
+        <li className={activeClass === index ? "active-tab" : ""}>
           <a onClick={this.doClick.bind(this, index)}>
             <span>{name}</span>
           </a>

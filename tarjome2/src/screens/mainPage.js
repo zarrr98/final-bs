@@ -88,7 +88,7 @@ export default class MainPage extends React.Component {
           cardContent = {true}
         />
         <InfoSection />
-        {/* </main> */}
+        
       </div>
     );
   }

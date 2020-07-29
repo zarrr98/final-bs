@@ -152,9 +152,9 @@ class SignupPage extends React.Component {
               return (
                 <React.Fragment>
                   <label>{item.label}</label>
-                  <ButtonGroup className="mr-2" aria-label="First group">
+                  <ButtonGroup className="mr-2 choose-role-btns" aria-label="First group">
                     {item.options.map(option => (
-                      <Button
+                      <Button 
                         className="radio-button"
                         active={
                           this.state.values[item.name] === option ? true : false

@@ -42,7 +42,7 @@
   background: rgb(90, 4, 79);
   color: #f7f9f9;
 }
-.tabs-header li.active > a {
+.tabs-header li.active-tab > a {
   background: rgb(90, 4, 79);
 }
 .tabs-content {

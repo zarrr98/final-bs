@@ -171,12 +171,12 @@ class AdvertisementListItem extends React.Component {
             !projectPage ? (
               !!ad.translatedFile ? (
                 <div>
-                  <Button variant="success" onClick={this.showCompleteModal}>
+                  <Button variant="primary" onClick={this.showCompleteModal}>
                     {strings.screens.completeProject}
                   </Button>
                 </div>
               ) : (
-                <Button variant="success" onClick={this.showUploadFileModal}>
+                <Button variant="primary" onClick={this.showUploadFileModal}>
                   {strings.screens.uploadTranslatedFile}
                 </Button>
               )
@@ -189,7 +189,7 @@ class AdvertisementListItem extends React.Component {
             !appliable &&
             projectPage &&
             ad.translatedFile ? (
-              <Button variant="success" onClick={this.showCompleteModal}>
+              <Button variant="primary" onClick={this.showCompleteModal}>
                 {strings.screens.completeProject}
               </Button>
             ) : null}

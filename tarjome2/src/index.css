@@ -166,12 +166,49 @@ body {
 .account-title {
   text-align: right;
 }
+
 .radio-button,
 .radio-button:hover,
-.radio-button:active {
+.radio-button:active,
+.radio-button:focus,
+.radio-button:active:focus,
+ .btn-primary,
+ .btn-primary:active:focus,
+.choose-role-btns .btn
+{
+  background-color: #212f3d;
+  border: none;
+  outline: none;
+  border-color: #212f3d;
+  box-shadow: none;
+}
+
+
+ .btn-primary:hover,
+ .btn-primary:active,
+ .btn-primary:focus,
+ .btn-primary:active:focus,
+
+ .active,
+ .active:hover,
+ .active:active,
+ .active:focus,
+ .active:active:focus,
+
+
+.choose-role-btns .btn:hover,
+.choose-role-btns .btn:active,
+.choose-role-btns .btn:focus,
+.choose-role-btns .btn:active:focus,
+
+ .btn-primary:not(:disabled):not(.disabled).active,
+ .btn-primary:disabled
+{
   background-color: rgb(90, 4, 79);
   border: none;
   outline: none;
+  border-color: rgb(90, 4, 79);
+  box-shadow: none;
 }
 
 .margin-top {
@@ -247,6 +284,23 @@ body {
   }
   100% {
     transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.explanation-card {
+  transform: translateX(0);
+  animation: explanation-card-change 0.79s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes explanation-card-change {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
     opacity: 1;
   }
 }
