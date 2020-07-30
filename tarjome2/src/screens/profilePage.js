@@ -2,14 +2,51 @@ import React from "react";
 import "../index.css";
 import strings from "../utils/strings";
 import NavigationSystem from "../components/navigationSystem";
-import { navigationItems } from "../utils/configs";
+import { navigationItems, URL,StrorageGetItem, StorageSetItem } from "../utils/configs";
 import ProfileCard from "../components/profileCard";
-import { withRouter } from "react-router-dom";
+import Load from "../components/load";
+import Empty from "../components/empty";
+import { withRouter, useParams } from "react-router-dom";
+import { FetchData } from "../utils/services";
 
 class ProfilePage extends React.Component {
- 
+  state = {
+    isLoading: false,
+    profile: this.props.profile,
+  };
+
+  getTranslator = async () => {
+    let translatorId = this.props.match.params.translatorId;
+    let token = StrorageGetItem("profile", true).token
+    this.setState({ isLoading: true });
+    let data = await FetchData(
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${translatorId}`,
+      token
+    );
+    this.setState({ isLoading: false });
+    if (data) {
+      if (data.status === 200) {
+        this.setState({
+          profile: data.resolve,
+        });
+      }
+    }
+  };
+  componentDidMount = () => {
+    if (Object.keys(this.props.profile).length === 0 && this.props.profile.constructor === Object){
+      this.getTranslator()
+    }
+  }
   render() {
-    
+    let sth = this.props.match.params.translatorId;
+    console.log(
+      "STH is :",
+      sth,
+      " and this.state.profile is : ",
+      this.state.profile
+    );
+    let isProjectPage =  StrorageGetItem("projectPage",true);
+    console.log("****** projectPage in profile page (Storage): ", isProjectPage)
     return (
       <React.Fragment>
         <NavigationSystem
@@ -18,14 +55,25 @@ class ProfilePage extends React.Component {
           sideDrawerOpen={this.props.sideDrawerOpen}
           navigationItems={navigationItems.employerNavigationItems}
           loggedIn={true}
-          selectedTab = {this.props.location.state.projectPage ? strings.navbar.profile : strings.navbar.translators}
+          selectedTab={
+            //this.props.projectPage
+            //false
+            isProjectPage ? strings.navbar.profile : strings.navbar.translators
+          }
         />
 
-        <div className="color-behind-profile">
-          <div style={{ width: "60%", height: "140px" }}></div>
-          <ProfileCard profile={this.props.location.state.profile} dashboard = {false}/>
-         
-        </div>
+        {this.state.isLoading ? (
+          <Load />
+        ) : this.state.profile._id ? (
+          <div className="color-behind-profile">
+            <div style={{ width: "60%", height: "140px" }}></div>
+            <ProfileCard profile={this.state.profile} dashboard={false} />
+          </div>
+        ) : (
+          <main className="main-content">
+            <Empty text={'مشکلی پیش آمده. لطفا صفحه را رفرش کنید'} />
+          </main>
+        )}
       </React.Fragment>
     );
   }

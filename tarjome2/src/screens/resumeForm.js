@@ -1,7 +1,7 @@
 import React from "react";
 import "../index.css";
 import strings from "../utils/strings";
-import { Fields, Languages , URL} from "../utils/configs";
+import { Fields, Languages , URL, StorageSetItem, StrorageGetItem} from "../utils/configs";
 import { Button, Form ,Spinner} from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import {PatchData} from '../utils/services'
@@ -131,6 +131,8 @@ class ResumeForm extends React.Component {
     } else if (response.status === 200) {
         console.log("user updated successfully");
         this.props.updateProfile(this.state.values)
+        let profile = StrorageGetItem("profile",true)
+        StorageSetItem("profile",{...profile, translatorFields : this.state.values},true);
         this.props.history.push({
           pathname: "/profile",
         });
@@ -144,7 +146,8 @@ class ResumeForm extends React.Component {
   };
   submit = async () => {
     const { values } = this.state;
-    const {profile} =  this.props.location.state
+    //const {profile} =  this.props.location.state
+    const profile = StrorageGetItem("profile", true);
     console.log("VALues in submit : ", values ,'and profile is :',profile);
     let error = false;
     this.fields.map((item, i) => {

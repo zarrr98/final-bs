@@ -125,14 +125,14 @@ class AdvertisementListItem extends React.Component {
     let cardClasses = `right-aligned ${this.props.classes}`;
     let pendingText = this.getPendingText();
     let projectCost = this.getProjectCost();
-    console.log(
-      "related props : ",
-      appliable,
-      employer,
-      translator,
-      projectPage,
-      ad
-    );
+    // console.log(
+    //   "related props : ",
+    //   appliable,
+    //   employer,
+    //   translator,
+    //   projectPage,
+    //   ad
+    // );
     return (
       <Card className={cardClasses}>
         <Card.Body>

@@ -123,6 +123,7 @@ export default class TranslatorList extends React.Component {
             <TranslatorListGroup
               translators={this.state.filteredTranslators}
               setCurrentTranslator={this.props.setCurrentTranslator}
+              setIsProjectPage={this.props.setIsProjectPage}
             />
           ) : (
             <Empty />

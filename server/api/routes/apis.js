@@ -260,7 +260,7 @@ router.get("/users/:email/:pass", (req, res, next) => {
                 },
                 JWT_KEY,
                 {
-                  expiresIn: "3h",
+                  expiresIn: "20h",
                 }
               );
               return res.status(200).json({

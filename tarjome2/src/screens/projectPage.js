@@ -82,7 +82,7 @@ class ProjectPage extends React.Component {
   };
   render() {
     let { ad } = this.props.location.state;
-    console.log("Ad Gotten in projct page : ", this.props.location.state.ad);
+    //console.log("Ad Gotten in projct page : ", this.props.location.state.ad);
     return (
       <React.Fragment>
         <NavigationSystem
@@ -122,6 +122,7 @@ class ProjectPage extends React.Component {
               translators={this.state.translators}
               offers={ad.requestedTranslators}
               setCurrentTranslator={this.props.setCurrentTranslator}
+              setIsProjectPage={this.props.setIsProjectPage}
               hoverable={false}
               projectPage={true}
               requestedProject={ad.status === strings.adStatus.requested}

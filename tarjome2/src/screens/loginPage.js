@@ -3,7 +3,7 @@ import "../index.css";
 import strings from "../utils/strings";
 import { ButtonGroup, Button, Form, Spinner } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
-import { URL } from "../utils/configs";
+import { URL,StorageSetItem } from "../utils/configs";
 import {FetchData} from '../utils/services'
 
 class LoginPage extends React.Component {
@@ -61,6 +61,9 @@ class LoginPage extends React.Component {
       });
     } else if (response.status === 200) {
       this.props.setProfile(response.resolve);
+     // localStorage.setItem("profile" , JSON.stringify(response.resolve))
+     localStorage.removeItem("profile")
+     StorageSetItem("profile", response.resolve , true)
       if (
         response.resolve.role === strings.screens.translator &&
         !response.resolve.translatorFields

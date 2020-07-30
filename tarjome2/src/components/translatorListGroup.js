@@ -31,6 +31,7 @@ export default class TranslatorListGroup extends React.Component {
                 profile={item} 
                 offers = {this.props.offers}
                 setCurrentTranslator={this.props.setCurrentTranslator}
+                setIsProjectPage={this.props.setIsProjectPage}
                 hoverable = {this.props.hoverable}
                 projectPage = {this.props.projectPage}
                 requestedProject = {this.props.requestedProject}

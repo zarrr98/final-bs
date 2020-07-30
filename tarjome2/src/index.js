@@ -1,7 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import strings from "./utils/strings";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useParams,
+} from "react-router-dom";
 import BackDrop from "./components/Backdrop";
 import SignupPage from "./screens/signupPage";
 import LoginPage from "./screens/loginPage";
@@ -15,6 +20,7 @@ import MainPage from "./screens/mainPage";
 import ProfilePage from "./screens/profilePage";
 import ProjectPage from "./screens/projectPage";
 import HelpPage from "./screens/helpPage";
+import { StorageSetItem, StrorageGetItem } from "./utils/configs";
 
 import Tabs from "./components/tabs";
 
@@ -26,7 +32,8 @@ class App extends React.Component {
   state = {
     sideDrawerOpen: false,
     profile: null,
-    currentTranslator: "test@gmail.com", //the email of translator that some employer is seeing their page.
+    currentTranslator: {}, //the translator that some employer is seeing their page.
+    isProjectPage: false, // the place that the translator is being seen (projectPage or translatorlists)
   };
 
   drawerToggleClickHandler = () => {
@@ -51,7 +58,7 @@ class App extends React.Component {
     //   "set Profile called. voroodi : ",
     //   profile,
     //   " and profile in states :",
-    //   this.state.profile
+    //   profile
     // );
   };
   updateProfile = (translatorFields) => {
@@ -59,25 +66,34 @@ class App extends React.Component {
     this.setState({
       profile: { ...profile, translatorFields },
     });
-    console.log(
-      "updateProfile called. profile in states : ",
-      this.state.profile
-    );
+    console.log("updateProfile called. profile in states : ", profile);
   };
 
-  setCurrentTranslator = (email) => {
-    this.setState({ currentTranslator: email });
+  setCurrentTranslator = (translator) => {
+    this.setState({ currentTranslator: translator });
   };
+
+  setIsProjectPage = (isProjectPage) => {
+    this.setState({ isProjectPage });
+  };
+
   render() {
     let backDrop;
     if (this.state.sideDrawerOpen) {
       backDrop = <BackDrop backDropClickHandler={this.backDropClickHandler} />;
     }
+    let profile = !StrorageGetItem("profile", true)
+      ? this.state.profile
+      : !this.state.profile
+      ? StrorageGetItem("profile", true)
+      : StrorageGetItem("profile", true)._id !== this.state.profile._id
+      ? this.state.profile
+      : this.state.profile;
     return (
       <Router>
         <Route exact path={`/`}>
           <MainPage
-            profile={this.state.profile}
+            profile={profile}
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
@@ -85,7 +101,7 @@ class App extends React.Component {
         </Route>
         <Route exact path={`/help`}>
           <HelpPage
-            profile={this.state.profile}
+            profile={profile}
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
@@ -104,60 +120,80 @@ class App extends React.Component {
           <ResumeForm updateProfile={this.updateProfile} />
         </Route>
         <Route exact path={`/profile`}>
-          {!this.state.profile ? null : this.state.profile.role ===
-            strings.screens.translator ? (
-            <TranslatorDashboard
-              profile={this.state.profile}
-              backDropClickHandler={this.backDropClickHandler}
-              drawerToggleClickHandler={this.drawerToggleClickHandler}
-              sideDrawerOpen={this.state.sideDrawerOpen}
-              setProfile={this.setProfile}
-            />
-          ) : (
-            <EmployerDashboard
-              profile={this.state.profile}
-              backDropClickHandler={this.backDropClickHandler}
-              drawerToggleClickHandler={this.drawerToggleClickHandler}
-              sideDrawerOpen={this.state.sideDrawerOpen}
-              setProfile={this.setProfile}
-            />
-          )}
+          {
+            // !profile ? null :
+            !!profile && profile.role === strings.screens.translator ? (
+              <TranslatorDashboard
+                profile={profile}
+                backDropClickHandler={this.backDropClickHandler}
+                drawerToggleClickHandler={this.drawerToggleClickHandler}
+                sideDrawerOpen={this.state.sideDrawerOpen}
+                setProfile={this.setProfile}
+              />
+            ) : (
+              <EmployerDashboard
+                profile={profile}
+                backDropClickHandler={this.backDropClickHandler}
+                drawerToggleClickHandler={this.drawerToggleClickHandler}
+                sideDrawerOpen={this.state.sideDrawerOpen}
+                setProfile={this.setProfile}
+              />
+            )
+          }
         </Route>
 
         <Route exact path={`/profile/myProject`}>
           <ProjectPage
-            profile={this.state.profile}
+            profile={profile}
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
             setCurrentTranslator={this.setCurrentTranslator}
+            setIsProjectPage={this.setIsProjectPage}
           />
         </Route>
 
         <Route exact path={`/translators`}>
           <TranslatorList
-            profile={this.state.profile}
+            profile={profile}
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
             setCurrentTranslator={this.setCurrentTranslator}
+            setIsProjectPage={this.setIsProjectPage}
           />
         </Route>
         <Route exact path={`/advertisements`}>
           <AdvertisementList
-            profile={this.state.profile}
+            profile={profile}
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
           />
         </Route>
-        <Route exact path={`/translators/${this.state.currentTranslator}`}>
+        {/* <Route exact path={`/translators/${this.state.currentTranslator._id}`}>
           <ProfilePage
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
+            profile = {this.state.currentTranslator}
+            projectPage = {this.state.isProjectPage}
           />
-        </Route>
+        </Route> */}
+        <Switch>
+          <Route
+            path={`/translators/:translatorId`}
+            children={
+              <ProfilePage
+                backDropClickHandler={this.backDropClickHandler}
+                drawerToggleClickHandler={this.drawerToggleClickHandler}
+                sideDrawerOpen={this.state.sideDrawerOpen}
+                profile={this.state.currentTranslator}
+                projectPage={this.state.isProjectPage}
+              />
+            }
+          />
+        </Switch>
 
         <Route exact path={`/tabs`}>
           <Tabs />
