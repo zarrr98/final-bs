@@ -3,6 +3,7 @@ import "../index.css";
 import strings from "../utils/strings";
 import { Card, Badge, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import Empty from './empty'
 
 class ProfileCard extends React.Component {
   static defaultProps = {
@@ -17,15 +18,15 @@ class ProfileCard extends React.Component {
     localStorage.removeItem("profile")
   };
   render() {
-    let translator = this.props.profile.role === strings.screens.translator;
-    let roleInfo =
-      this.props.profile.role === strings.screens.translator
+    let translator = this.props.profile ? this.props.profile.role === strings.screens.translator : false;
+    let roleInfo = this.props.profile ?
+      (this.props.profile.role === strings.screens.translator
         ? `${this.props.profile.role} ${strings.profile.for} ${this.props.profile.translatorFields.experienceYears} ${strings.profile.year}`
-        : `${this.props.profile.role}`;
-    let explanation = this.props.profile.translatorFields
+        : `${this.props.profile.role}`) : "";
+    let explanation = this.props.profile ? this.props.profile.translatorFields
       ? this.props.profile.translatorFields.explanation
-      : "";
-    return (
+      : "" : "";
+    return this.props.profile ? (
       <Card className="profile-card">
         <Card.Body>
           <Card.Title>
@@ -62,7 +63,7 @@ class ProfileCard extends React.Component {
                 <p>
                   {" "}
                   {strings.profile.language}
-                  {this.props.profile.translatorFields.languages.map(lang => {
+                  {this.props.profile && this.props.profile.translatorFields.languages.map(lang => {
                     return (
                       <React.Fragment>
                         <Badge variant="secondary">{lang}</Badge>
@@ -74,7 +75,7 @@ class ProfileCard extends React.Component {
                 <p>
                   {" "}
                   {strings.profile.field}
-                  {this.props.profile.translatorFields.fields.map(f => {
+                  {this.props.profile && this.props.profile.translatorFields.fields.map(f => {
                     return (
                       <React.Fragment>
                         <Badge variant="secondary">{f}</Badge>
@@ -102,7 +103,7 @@ class ProfileCard extends React.Component {
           </Card.Footer>
         ) : null}
       </Card>
-    );
+    ) : <Empty/>;
   }
 }
 export default withRouter(ProfileCard);

@@ -47,7 +47,13 @@ export default class EmployerDashboard extends React.Component {
       this.divideProjects([]);
     } else if (response.status === 200) {
       this.divideProjects(response.resolve);
-    } else {
+    } else if (response.status === 413) {
+      this.props.setProfile(null);
+
+      window.location = "/";
+      localStorage.removeItem("profile");
+    }
+     else {
       this.divideProjects([]);
     }
   };
@@ -55,7 +61,7 @@ export default class EmployerDashboard extends React.Component {
     this.setState({ isLoading: true });
     const data = await FetchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/employerProjects`,
-      this.props.profile.token
+      this.props.profile ? this.props.profile.token : ""
     );
 
     this.setState({ isLoading: false });
@@ -121,6 +127,7 @@ export default class EmployerDashboard extends React.Component {
           setShowModal={this.setShowModal}
           profile={this.props.profile}
           refreshProjects={this.refreshProjects}
+          setProfile = {this.props.setProfile}
         />
       </React.Fragment>
     );

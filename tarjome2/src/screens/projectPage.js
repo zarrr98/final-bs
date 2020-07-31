@@ -10,7 +10,7 @@ import Load from "../components/load";
 import Empty from "../components/empty";
 import AlertModal from "../components/alertModal";
 import { FetchData, PutData } from "../utils/services";
-import {Alert} from 'react-bootstrap'
+import { Alert } from "react-bootstrap";
 
 class ProjectPage extends React.Component {
   state = {
@@ -21,34 +21,34 @@ class ProjectPage extends React.Component {
     modalText: "",
     errorMessage: "",
     // translatorDoneAssurance : false,
-    employerDoneAssurance: false
+    employerDoneAssurance: false,
   };
 
-  setShowModal = val => {
+  setShowModal = (val) => {
     this.setState({
-      showModal: val
+      showModal: val,
     });
   };
 
-  setChoosenTranslator = val => {
+  setChoosenTranslator = (val) => {
     console.log("setChoosenTranslator got called . the parameter is :", val);
     this.setState({
-      choosenTranslator: val
+      choosenTranslator: val,
     });
   };
 
-  setModalText = text => {
+  setModalText = (text) => {
     this.setState({
-      modalText: text
+      modalText: text,
     });
   };
 
-  setStates = obj => {
+  setStates = (obj) => {
     this.setState(obj);
   };
-  setErrorMessage = msg => {
-    this.setState({errorMessage : msg})
-  }
+  setErrorMessage = (msg) => {
+    this.setState({ errorMessage: msg });
+  };
   setTranslators = async () => {
     let { ad } = this.props.location.state;
     let translators = [];
@@ -58,20 +58,34 @@ class ProjectPage extends React.Component {
       data = await PutData(
         `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslators`,
         { offers: ad.requestedTranslators },
-        this.props.profile.token
+        this.props.profile ? this.props.profile.token : ""
       );
       this.setState({ isLoading: false });
       if (data) {
-        if (data.status === 200) translators = data.resolve;
+        if (data.status === 200) {
+          translators = data.resolve;
+        } else if (data.status === 413) {
+          this.props.setProfile(null);
+
+          window.location = "/";
+          localStorage.removeItem("profile");
+        }
       }
     } else {
       data = await FetchData(
         `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${ad.translator.id}`,
-        this.props.profile.token
+        this.props.profile ? this.props.profile.token : ""
       );
       this.setState({ isLoading: false });
       if (data) {
-        if (data.status === 200) translators = [data.resolve];
+        if (data.status === 200) {
+          translators = [data.resolve];
+        } else if (data.status === 413) {
+          this.props.setProfile(null);
+
+          window.location = "/";
+          localStorage.removeItem("profile");
+        }
       }
     }
     this.setState({ translators });
@@ -104,7 +118,11 @@ class ProjectPage extends React.Component {
             setStates={this.setStates}
           />
           {this.state.errorMessage !== "" ? (
-            <Alert key={ad._id} variant={'danger'} className="margin-top right-aligned">
+            <Alert
+              key={ad._id}
+              variant={"danger"}
+              className="margin-top right-aligned"
+            >
               {this.state.errorMessage}
             </Alert>
           ) : null}
@@ -132,7 +150,7 @@ class ProjectPage extends React.Component {
               setShowModal={this.setShowModal}
               setChoosenTranslator={this.setChoosenTranslator}
               setModalText={this.setModalText}
-              setErrorMessage = {this.setErrorMessage}
+              setErrorMessage={this.setErrorMessage}
               // setTransDoneAssurance = {this.setTransDoneAssurance}
               // setEmployerDoneAssure = {this.setEmployerDoneAssure}
             />
@@ -149,7 +167,8 @@ class ProjectPage extends React.Component {
           choosenTranslator={this.state.choosenTranslator}
           //translatorDoneAssurance = {this.state.translatorDoneAssurance}
           employerDoneAssurance={this.state.employerDoneAssurance}
-          setErrorMessage = {this.setErrorMessage}
+          setErrorMessage={this.setErrorMessage}
+          setProfile={this.props.setProfile}
         />
       </React.Fragment>
     );

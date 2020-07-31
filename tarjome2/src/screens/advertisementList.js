@@ -106,13 +106,18 @@ export default class AdvertisementList extends React.Component {
         advertisements: response.resolve,
         filteredAdvertisements: response.resolve,
       });
+    } else if (response.status === 413) {
+      this.props.setProfile(null);
+
+      window.location = "/";
+      localStorage.removeItem("profile");
     }
   };
   getAdvertisements = async () => {
     this.setState({ isLoading: true });
     const data = await FetchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/advertisements`,
-      this.props.profile.token
+      this.props.profile ? this.props.profile.token : ""
     );
     this.setState({ isLoading: false });
     this.checkResponseStatus(data);
@@ -158,6 +163,7 @@ export default class AdvertisementList extends React.Component {
           setShowModal={this.setShowModal}
           profile={this.props.profile}
           choosedAdId={this.state.choosedAdId}
+          setProfile = {this.props.setProfile}
         />
       </div>
     );

@@ -34,6 +34,7 @@ class App extends React.Component {
     profile: null,
     currentTranslator: {}, //the translator that some employer is seeing their page.
     isProjectPage: false, // the place that the translator is being seen (projectPage or translatorlists)
+    //exitedProfile: { token: "" },
   };
 
   drawerToggleClickHandler = () => {
@@ -82,13 +83,14 @@ class App extends React.Component {
     if (this.state.sideDrawerOpen) {
       backDrop = <BackDrop backDropClickHandler={this.backDropClickHandler} />;
     }
-    let profile = !StrorageGetItem("profile", true)
-      ? this.state.profile
-      : !this.state.profile
-      ? StrorageGetItem("profile", true)
-      : StrorageGetItem("profile", true)._id !== this.state.profile._id
-      ? this.state.profile
-      : this.state.profile;
+    let profile =
+       !StrorageGetItem("profile", true)
+        ? this.state.profile
+        : !this.state.profile
+        ? StrorageGetItem("profile", true)
+        : StrorageGetItem("profile", true)._id !== this.state.profile._id
+        ? this.state.profile
+        : this.state.profile;
     return (
       <Router>
         <Route exact path={`/`}>
@@ -117,7 +119,10 @@ class App extends React.Component {
           <AlertPage />
         </Route>
         <Route exact path={`/fillResume`}>
-          <ResumeForm updateProfile={this.updateProfile} />
+          <ResumeForm
+            updateProfile={this.updateProfile}
+            setProfile={this.setProfile}
+          />
         </Route>
         <Route exact path={`/profile`}>
           {
@@ -150,6 +155,7 @@ class App extends React.Component {
             sideDrawerOpen={this.state.sideDrawerOpen}
             setCurrentTranslator={this.setCurrentTranslator}
             setIsProjectPage={this.setIsProjectPage}
+            setProfile={this.setProfile}
           />
         </Route>
 
@@ -161,6 +167,7 @@ class App extends React.Component {
             sideDrawerOpen={this.state.sideDrawerOpen}
             setCurrentTranslator={this.setCurrentTranslator}
             setIsProjectPage={this.setIsProjectPage}
+            setProfile={this.setProfile}
           />
         </Route>
         <Route exact path={`/advertisements`}>
@@ -169,6 +176,7 @@ class App extends React.Component {
             backDropClickHandler={this.backDropClickHandler}
             drawerToggleClickHandler={this.drawerToggleClickHandler}
             sideDrawerOpen={this.state.sideDrawerOpen}
+            setProfile={this.setProfile}
           />
         </Route>
         {/* <Route exact path={`/translators/${this.state.currentTranslator._id}`}>
@@ -190,14 +198,11 @@ class App extends React.Component {
                 sideDrawerOpen={this.state.sideDrawerOpen}
                 profile={this.state.currentTranslator}
                 projectPage={this.state.isProjectPage}
+                setProfile={this.setProfile}
               />
             }
           />
         </Switch>
-
-        <Route exact path={`/tabs`}>
-          <Tabs />
-        </Route>
       </Router>
     );
   }

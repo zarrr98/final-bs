@@ -65,7 +65,15 @@ export default class ApplyToAdModal extends React.Component {
       } else if (response.status === 500) {
         // console.log("ad adding failed :( data :", data);
         this.setState({ errorMessage: strings.screens.connectionError });
-      }else if (response.status === 403){
+      }else if (response.status === 413) {
+        this.props.setProfile(null);
+  
+        window.location = "/";
+        localStorage.removeItem("profile");
+      }
+      
+      
+      else if (response.status === 403){
         this.setState({errorMessage : strings.screens.AuthFailedError})
       }else {
         this.setState({ errorMessage: strings.screens.connectionError });
@@ -88,7 +96,7 @@ export default class ApplyToAdModal extends React.Component {
       const data = await PatchData(
         `${URL.protocol}://${URL.baseURL}:${URL.port}/applyForAd`,
         { ...values, adId: this.props.choosedAdId },
-        this.props.profile.token
+        this.props.profile ? this.props.profile.token : ""
       );
       this.setState({ isLoading: false });
       this.checkResponseStatus(data)

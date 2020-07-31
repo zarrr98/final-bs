@@ -66,6 +66,11 @@ export default class TranslatorDashboard extends React.Component {
       this.divideProjects([]);
     } else if (response.status === 200) {
       this.divideProjects(response.resolve);
+    }else if (response.status === 413) {
+      this.props.setProfile(null);
+
+      window.location = "/";
+      localStorage.removeItem("profile");
     } else {
       this.divideProjects([]);
     }
@@ -74,7 +79,7 @@ export default class TranslatorDashboard extends React.Component {
     this.setState({ isLoading: true });
     const data = await FetchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/translatorProjects`,
-      this.props.profile.token
+      this.props.profile ? this.props.profile.token : ""
     );
 
     this.setState({ isLoading: false });
@@ -164,6 +169,7 @@ export default class TranslatorDashboard extends React.Component {
           translatorDoneAssurance={true}
           refreshProjects={this.refreshProjects}
           setErrorMessage={this.setErrorMessage}
+          setProfile = {this.props.setProfile}
           //employerDoneAssurance = {this.state.employerDoneAssurance}
         />
         <UploadFileModal
@@ -173,6 +179,7 @@ export default class TranslatorDashboard extends React.Component {
           ad={this.state.currentAd}
           refreshProjects={this.refreshProjects}
           setStates={this.setStates}
+          setProfile = {this.props.setProfile}
         />
       </React.Fragment>
     );

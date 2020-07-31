@@ -9,9 +9,7 @@ import InfoSection from "../components/infoSection";
 import { Image, Col, Row, Button } from "react-bootstrap";
 
 export default class MainPage extends React.Component {
-  state = {
-    btn_bg: "transparent"
-  };
+  
   employerSection = [
     {
       src: cardPictures[0],
@@ -48,11 +46,7 @@ export default class MainPage extends React.Component {
     }
   ];
 
-  onButtonClick = () => {
-    this.setState({
-      btn_bg: "rgb(236, 213, 236)"
-    });
-  };
+  
   render() {
     let navItems = !this.props.profile
       ? navigationItems.notLoggedInNavigationItems

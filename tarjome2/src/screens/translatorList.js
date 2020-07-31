@@ -85,13 +85,18 @@ export default class TranslatorList extends React.Component {
         translators: response.resolve,
         filteredTranslators: response.resolve,
       });
+    }else if (response.status === 413) {
+      this.props.setProfile(null);
+
+      window.location = "/";
+      localStorage.removeItem("profile");
     }
   };
   getTranslators = async () => {
     this.setState({ isLoading: true });
     const data = await FetchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/translators`,
-      this.props.profile.token
+      this.props.profile ? this.props.profile.token : ""
     );
     this.setState({ isLoading: false });
     this.checkResponseStatus(data);

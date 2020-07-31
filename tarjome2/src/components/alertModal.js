@@ -11,13 +11,13 @@ class AlertModal extends React.Component {
     acceptanceAssuarance: true,
     translatorDoneAssurance: false,
     employerDoneAssurance: false,
-    errorMessage: ""
+    errorMessage: "",
   };
   state = {
     showModal: this.props.showModal,
     error: false,
     errorMessage: this.props.errorMessage,
-    isLoading: false
+    isLoading: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -27,7 +27,7 @@ class AlertModal extends React.Component {
     }
   }
 
-  checkResponseStatus = response => {
+  checkResponseStatus = (response) => {
     if (!response) {
       this.props.setErrorMessage(strings.screens.connectionError);
     } else if (response.status === 200) {
@@ -37,11 +37,16 @@ class AlertModal extends React.Component {
       } else {
         console.log("after patching data status 200 : ", response);
         this.props.history.push({
-          pathname: "/profile"
+          pathname: "/profile",
         });
       }
     } else if (response.status === 403) {
       this.props.setErrorMessage(strings.screens.AuthFailedError);
+    } else if (response.status === 413) {
+      this.props.setProfile(null);
+
+      window.location = "/";
+      localStorage.removeItem("profile");
     } else {
       this.props.setErrorMessage(strings.screens.connectionError);
     }
@@ -50,14 +55,14 @@ class AlertModal extends React.Component {
     let { profile, ad, choosenTranslator } = this.props;
     let sendData = {
       translator: { id: choosenTranslator._id, cost: choosenTranslator.cost },
-      status: "doing"
+      status: "doing",
     };
     console.log("@@@@sendData : ", sendData);
     this.setState({ isLoading: true });
     const data = await PatchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/chooseTranslator/${ad._id}`,
       sendData,
-      profile.token
+      profile ? profile.token : ""
     );
     this.setState({ isLoading: false });
     this.checkResponseStatus(data);
@@ -71,7 +76,7 @@ class AlertModal extends React.Component {
     const data = await PatchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/employer/done/${ad._id}`,
       {},
-      profile.token
+      profile ? profile.token : ""
     );
     this.setState({ isLoading: false });
     this.checkResponseStatus(data);
@@ -84,7 +89,7 @@ class AlertModal extends React.Component {
     const data = await PatchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/translator/done/${ad._id}`,
       {},
-      profile.token
+      profile ? profile.token : ""
     );
     this.setState({ isLoading: false });
     this.checkResponseStatus(data);
@@ -92,7 +97,7 @@ class AlertModal extends React.Component {
   };
   componentDidMount = () => {
     this.setState({
-      errorMessage: ""
+      errorMessage: "",
     });
   };
   render() {

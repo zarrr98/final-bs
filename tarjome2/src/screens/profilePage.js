@@ -17,11 +17,11 @@ class ProfilePage extends React.Component {
 
   getTranslator = async () => {
     let translatorId = this.props.match.params.translatorId;
-    let token = StrorageGetItem("profile", true).token
+    let prof = StrorageGetItem("profile", true)
     this.setState({ isLoading: true });
     let data = await FetchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${translatorId}`,
-      token
+      prof ? prof.token : ""
     );
     this.setState({ isLoading: false });
     if (data) {
@@ -29,6 +29,11 @@ class ProfilePage extends React.Component {
         this.setState({
           profile: data.resolve,
         });
+      }else if (data.status === 413) {
+        this.props.setProfile(null);
+  
+        window.location = "/";
+        localStorage.removeItem("profile");
       }
     }
   };

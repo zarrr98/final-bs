@@ -113,8 +113,8 @@ export default class CreateAdModal extends React.Component {
   };
 
   onDropRejected = (rejected) => {
-   // console.log("$$ onDropRejected got called => ", rejected);
-    alert(strings.screens.uploadTypeFileExplanation)
+    // console.log("$$ onDropRejected got called => ", rejected);
+    alert(strings.screens.uploadTypeFileExplanation);
   };
 
   setErrorMessage = (name, msg) => {
@@ -187,6 +187,11 @@ export default class CreateAdModal extends React.Component {
       });
     } else if (response.status === 500) {
       this.setState({ errorMessage: strings.screens.connectionError });
+    } else if (response.status === 413) {
+      this.props.setProfile(null);
+
+      window.location = "/";
+      localStorage.removeItem("profile");
     } else {
       this.setState({ errorMessage: strings.screens.connectionError });
     }
@@ -221,7 +226,7 @@ export default class CreateAdModal extends React.Component {
       const data = await SendDataAndFile(
         `${URL.protocol}://${URL.baseURL}:${URL.port}/addAdvertisement`,
         values,
-        this.props.profile.token,
+        this.props.profile ? this.props.profile.token : "",
         "PUT"
       );
       this.setState({ isLoading: false });
@@ -348,8 +353,7 @@ export default class CreateAdModal extends React.Component {
                           <input {...getInputProps()} />
                           <p className="gray-text">
                             {!isDragActive &&
-                              strings.screens.uploadFileExplanation
-                              }
+                              strings.screens.uploadFileExplanation}
                             {isDragActive &&
                               !isDragReject &&
                               strings.screens.uploadFileDropping}
