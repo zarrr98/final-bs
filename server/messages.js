@@ -29,6 +29,7 @@ const messages = {
     };
   },
 
+  //for notifying the employer
   translatedFileUploaded: (adName) => {
     return {
       _id: mongoose.Types.ObjectId(),
@@ -36,6 +37,25 @@ const messages = {
       text: strings.translatedFileUploadedText(adName),
     };
   },
+
+  //for notifying the employer
+  translatorDoneTheProject : (adName , EmployeDone) => {
+    return {
+      _id : mongoose.Types.ObjectId(),
+      topic : strings.translatorDoneTheProjectTopic(adName),
+      text : strings.translatorDoneTheProjectText(adName , EmployeDone)
+    }
+  },
+
+  //for notifying the translator
+  employerDoneTheProject : (adName , TranslatorDone) => {
+    return {
+      _id : mongoose.Types.ObjectId(),
+      topic : strings.employerDoneTheProjectTopic(adName),
+      text : strings.employerDoneTheProjectText(adName , TranslatorDone)
+    }
+  },
+  
 };
 
 module.exports = messages;

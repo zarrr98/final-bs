@@ -594,14 +594,9 @@ router.patch("/chooseTranslator/:aid", checkAuth, (req, res, next) => {
           $push: { messages: message },
           $inc: { "translatorFields.acceptedProjects": 1 },
         };
-        User.findOneAndUpdate(
-         query,
-         update
-        )
+        User.findOneAndUpdate(query, update)
           .exec()
           .then((resolve2) => {
-            
-
             res.status(200).json({
               status: 200,
               message: "choosed translator and incremented stuff successfully",
@@ -637,29 +632,30 @@ router.patch("/employer/done/:aid", checkAuth, (req, res, next) => {
         Advertisement.update({ _id: adId }, { $set: updateObj })
           .exec()
           .then((resolve) => {
-            if (done) {
-              User.findOneAndUpdate(
-                { _id: ad.translator.id },
-                { $inc: { "translatorFields.doneProjects": 1 } }
-              )
-                .exec()
-                .then((resolve2) => {
-                  res.status(200).json({
-                    status: 200,
-                    message: "Done project and incremented stuff successfully",
-                    resolve,
-                  });
-                })
-                .catch((err) => {
-                  return res.status(500).json({ error: err, status: 500 });
-                });
-            } else {
-              res.status(200).json({
-                status: 200,
-                message: "ad got done successfully!!!",
-                resolve,
-              });
+            console.log("$$ here")
+            let message = messages.employerDoneTheProject(ad.title, done);
+
+            let query = { _id: ad.translator.id };
+            let update = {
+              $push: { messages: message },
+             // $inc: done ? { "translatorFields.doneProjects": 1 } : {},
+            };
+            if (done){
+              update.$inc = { "translatorFields.doneProjects": 1 };
             }
+
+            User.findOneAndUpdate(query, update)
+              .exec()
+              .then((resolve2) => {
+                res.status(200).json({
+                  status: 200,
+                  message: "Done project and incremented stuff successfully",
+                  resolve,
+                });
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: err, status: 500 });
+              });
           })
           .catch((err) => {
             return res.status(500).json({ error: err, status: 500 });
@@ -691,29 +687,44 @@ router.patch("/translator/done/:aid", checkAuth, (req, res, next) => {
         Advertisement.update({ _id: adId }, { $set: updateObj })
           .exec()
           .then((resolve) => {
-            if (done) {
-              User.findOneAndUpdate(
-                { _id: ad.translator.id },
-                { $inc: { "translatorFields.doneProjects": 1 } }
-              )
-                .exec()
-                .then((resolve2) => {
+            let message = messages.translatorDoneTheProject(ad.title, done);
+
+            let query = { _id: ad.ownerId };
+            let update = {
+              $push: { messages: message },
+            };
+
+            User.update(query, update)
+              .exec()
+              .then((resolve2) => {
+                if (done) {
+                  User.findOneAndUpdate(
+                    { _id: ad.translator.id },
+                    { $inc: { "translatorFields.doneProjects": 1 } }
+                  )
+                    .exec()
+                    .then((resolve3) => {
+                      res.status(200).json({
+                        status: 200,
+                        message:
+                          "Done project and incremented stuff successfully",
+                        resolve,
+                      });
+                    })
+                    .catch((err) => {
+                      return res.status(500).json({ error: err, status: 500 });
+                    });
+                } else {
                   res.status(200).json({
                     status: 200,
-                    message: "Done project and incremented stuff successfully",
+                    message: "ad got done successfully!!!",
                     resolve,
                   });
-                })
-                .catch((err) => {
-                  return res.status(500).json({ error: err, status: 500 });
-                });
-            } else {
-              res.status(200).json({
-                status: 200,
-                message: "ad got done successfully!!!",
-                resolve,
+                }
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: err, status: 500 });
               });
-            }
           })
           .catch((err) => {
             return res.status(500).json({ error: err, status: 500 });
@@ -742,26 +753,25 @@ router.patch(
       )
         .exec()
         .then((resolve) => {
-          let message = messages.translatedFileUploaded(req.body.adName)
+          let message = messages.translatedFileUploaded(req.body.adName);
 
-            let query = { _id: req.body.ownerId };
-            let update = {
-              $push: { messages: message },
-            };
+          let query = { _id: req.body.ownerId };
+          let update = {
+            $push: { messages: message },
+          };
 
-            User.update(query, update)
-              .exec()
-              .then((resolve2) => {
-                res.status(200).json({
-                  status: 200,
-                  message: "uploaded translated file successfully",
-                  resolve,
-                });
-              })
-              .catch((err) => {
-                return res.status(500).json({ error: err, status: 500 });
+          User.update(query, update)
+            .exec()
+            .then((resolve2) => {
+              res.status(200).json({
+                status: 200,
+                message: "uploaded translated file successfully",
+                resolve,
               });
-
+            })
+            .catch((err) => {
+              return res.status(500).json({ error: err, status: 500 });
+            });
 
           // res.status(200).json({
           //   status: 200,
