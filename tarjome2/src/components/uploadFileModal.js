@@ -94,10 +94,11 @@ export default class UploadFileModal extends React.Component {
     });
     if (!error) {
       console.log("Everything is ok in submit : values => ", values);
+      let sendData = {...values , adName : ad.title, ownerId: ad.ownerId}
       this.setState({ isLoading: true });
       const data = await SendDataAndFile(
         `${URL.protocol}://${URL.baseURL}:${URL.port}/upload/translatedFile/${ad._id}`,
-        values,
+        sendData,
         profile ? profile.token : "",
         "PATCH"
       );

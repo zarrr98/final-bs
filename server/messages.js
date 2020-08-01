@@ -20,13 +20,22 @@ const messages = {
       text: strings.translatorAppliedText(translatorName, adName),
     };
   },
+
+  translatorChoosed: (adName) => {
+    return {
+      _id: mongoose.Types.ObjectId(),
+      topic: strings.translatorChoosedTopic(adName),
+      text: strings.translatorChoosedText(adName),
+    };
+  },
+
+  translatedFileUploaded: (adName) => {
+    return {
+      _id: mongoose.Types.ObjectId(),
+      topic: strings.translatedFileUploadedTopic(adName),
+      text: strings.translatedFileUploadedText(adName),
+    };
+  },
 };
 
 module.exports = messages;
-
-// module.exports.welcomeMessage = (name) => {
-//     return {
-//         topic: `${strings.welcomeTopic}`,
-//         text : `${name} ${strings.welcomeText}`
-//     }
-// }

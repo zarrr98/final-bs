@@ -585,15 +585,23 @@ router.put("/projectTranslators", checkAuth, (req, res, next) => {
 router.patch("/chooseTranslator/:aid", checkAuth, (req, res, next) => {
   let adId = req.params.aid;
   if (req.decodedJWT.role === "کارفرما") {
-    Advertisement.update({ _id: adId }, { $set: req.body })
+    Advertisement.update({ _id: adId }, { $set: req.body.ad })
       .exec()
       .then((resolve) => {
+        let message = messages.translatorChoosed(req.body.message);
+        let query = { _id: req.body.ad.translator.id };
+        let update = {
+          $push: { messages: message },
+          $inc: { "translatorFields.acceptedProjects": 1 },
+        };
         User.findOneAndUpdate(
-          { _id: req.body.translator.id },
-          { $inc: { "translatorFields.acceptedProjects": 1 } }
+         query,
+         update
         )
           .exec()
           .then((resolve2) => {
+            
+
             res.status(200).json({
               status: 200,
               message: "choosed translator and incremented stuff successfully",
@@ -734,11 +742,32 @@ router.patch(
       )
         .exec()
         .then((resolve) => {
-          res.status(200).json({
-            status: 200,
-            message: "uploaded translated file successfully",
-            resolve,
-          });
+          let message = messages.translatedFileUploaded(req.body.adName)
+
+            let query = { _id: req.body.ownerId };
+            let update = {
+              $push: { messages: message },
+            };
+
+            User.update(query, update)
+              .exec()
+              .then((resolve2) => {
+                res.status(200).json({
+                  status: 200,
+                  message: "uploaded translated file successfully",
+                  resolve,
+                });
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: err, status: 500 });
+              });
+
+
+          // res.status(200).json({
+          //   status: 200,
+          //   message: "uploaded translated file successfully",
+          //   resolve,
+          // });
         })
         .catch((err) => {
           return res.status(500).json({ error: err, status: 500 });

@@ -54,8 +54,11 @@ class AlertModal extends React.Component {
   chooseTranslator = async () => {
     let { profile, ad, choosenTranslator } = this.props;
     let sendData = {
-      translator: { id: choosenTranslator._id, cost: choosenTranslator.cost },
-      status: "doing",
+      ad: {
+        translator: { id: choosenTranslator._id, cost: choosenTranslator.cost },
+        status: "doing",
+      },
+      message: ad.title,
     };
     console.log("@@@@sendData : ", sendData);
     this.setState({ isLoading: true });
