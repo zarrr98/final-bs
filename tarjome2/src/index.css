@@ -220,6 +220,9 @@ body {
 .margin-right {
   margin-right: 20px;
 }
+.margin-left {
+  margin-right: 20px;
+}
 .margin-bottom {
   margin-bottom: 20px;
 }
@@ -476,6 +479,12 @@ body {
   bottom: 0;
   position: sticky;
   
+}
+
+.new-msg-icon{
+  color: #ff751a;
+  width : 10px;
+  height: 10px;
 }
 
 @media (max-width: 768px) {

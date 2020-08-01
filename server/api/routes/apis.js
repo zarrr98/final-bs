@@ -10,102 +10,36 @@ const Advertisement = require("../../models/advertisement");
 // const templates = require("../../email/templates");
 // const sendEmail = require("../../email/send");
 const transporter = require("../../email/send");
-const sendEmail = require("../../email/templates")
+const sendEmail = require("../../email/templates");
 const { upload } = require("../middleware/upload-file");
+const messages = require("../../messages");
+//const persianDate = require("persian-date");
 
 const JWT_KEY = "dracaris";
 
-//send email (test)
-router.put("/sendemail", (req, res, next) => {
-  User.findOne({ email: req.body.email })
-    .exec()
-    .then((u) => {
-      // We have a new user!
-    
-        bcrypt.hash(req.body.password, 10, (error, hash) => {
-          const user = new User({
-            _id: mongoose.Types.ObjectId(),
-            role: req.body.role,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: req.body.password,
-          });
-          const confirmationToken = jwt.sign(
-            {
-              email: user.email,
-              userId: user._id,
-              role: user.role,
-            },
-            JWT_KEY,
-            {
-              expiresIn: '7h', //test
-            }
-          );
-          transporter
-            .sendMail(
-              sendEmail(req.body.email,"تایید ایمیل سایت ترجمه",confirmationToken )
-            )
-            .then((resolve) => {
-              return res.status(200).json({
-                message: "sent email successfully",
-                status: 200,
-                answer: {
-                 resolve,
-                 user : user,
-                },
-              });
-            })
-            .catch((err) => {
-              console.log("error in send email");
-              return res.status(500).json({
-                error: err,
-                status: 500,
-              });
-            });
-         
-        });
-    
+//handle clicking on confirmation link
+router.get("/confirmation/:token", confirmEmailToken, (req, res, next) => {
+  console.log("req.decodedJWT in handle confirmation => ", req.decodedJWT);
+  let message = messages.welcome(
+    req.decodedJWT.first_name,
+    req.decodedJWT.role
+  );
+  console.log("Weldome message : ", message);
+  let query = { _id: req.decodedJWT.userId };
+  let update = {
+    $set: { confirmed: true },
+    $push: { messages: message },
+  };
 
-      // We have already seen this email address.
-    
+  User.update(query, update)
+    .exec()
+    .then((resolve) => {
+      res.redirect("http://localhost:3000/login");
     })
     .catch((err) => {
-      return res.status(500).json({
-        error: err,
-        status: 500,
-      });
+      return res.status(500).json({ error: err, status: 500 });
     });
 });
-
-
-//handle clicking on confirmation link
-
-router.get("/confirmation/:token",confirmEmailToken, (req, res, next) => {
-  console.log("req.decodedJWT in handle confirmation => ", req.decodedJWT);
-  // User.findById(req.decodedJWT.userId)
-  //   .exec()
-  //   .then((user) => {
-      
-      
-     
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).json({ error: err, status: 500 });
-  //   });
-
-  User.update({ _id: req.decodedJWT.userId }, { $set: {confirmed : true} })
-  .exec()
-  .then((resolve) => {
-    res.redirect("http://localhost:3000/login")
-  })
-  .catch((err) => {
-    return res.status(500).json({ error: err, status: 500 });
-  });
-
- 
-});
-
 
 //signup
 router.put("/adduser", (req, res, next) => {
@@ -139,23 +73,29 @@ router.put("/adduser", (req, res, next) => {
                     email: user.email,
                     userId: user._id,
                     role: user.role,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
                   },
                   JWT_KEY,
                   {
-                    expiresIn: '1h',
+                    expiresIn: "1h",
                   }
                 );
                 transporter
                   .sendMail(
-                    sendEmail(req.body.email,"تایید ایمیل سایت ترجمه",confirmationToken )
+                    sendEmail(
+                      req.body.email,
+                      "تایید ایمیل سایت ترجمه",
+                      confirmationToken
+                    )
                   )
                   .then((resolve) => {
                     return res.status(200).json({
                       message: "sent email successfully",
                       status: 200,
                       answer: {
-                       resolve,
-                       user : user,
+                        resolve,
+                        user: user,
                       },
                     });
                   })
@@ -166,11 +106,8 @@ router.put("/adduser", (req, res, next) => {
                       status: 500,
                     });
                   });
-               
-             // });
 
-
-                
+                // });
               })
               .catch((err) => {
                 console.log("here");
@@ -183,29 +120,35 @@ router.put("/adduser", (req, res, next) => {
         });
 
         //user hast vali confirmed nist
-      }else if(u && !u.confirmed){
+      } else if (u && !u.confirmed) {
         const confirmationToken = jwt.sign(
           {
             email: u.email,
             userId: u._id,
             role: u.role,
+            first_name: u.first_name,
+            last_name: u.last_name,
           },
           JWT_KEY,
           {
-            expiresIn: '1h',
+            expiresIn: "1h",
           }
         );
         transporter
           .sendMail(
-            sendEmail(req.body.email,"تایید ایمیل سایت ترجمه",confirmationToken )
+            sendEmail(
+              req.body.email,
+              "تایید ایمیل سایت ترجمه",
+              confirmationToken
+            )
           )
           .then((resolve) => {
             return res.status(202).json({
               message: "sent email successfully",
               status: 202,
               answer: {
-               resolve,
-               user : u,
+                resolve,
+                user: u,
               },
             });
           })
@@ -235,6 +178,7 @@ router.put("/adduser", (req, res, next) => {
 
 //login
 router.get("/users/:email/:pass", (req, res, next) => {
+  //console.log(new persianDate().format())
   let email = req.params.email;
   User.findOne({
     email: email,
@@ -242,67 +186,76 @@ router.get("/users/:email/:pass", (req, res, next) => {
     .exec()
     .then((resolve) => {
       if (resolve) {
-        if (resolve._doc.confirmed){
-          bcrypt.compare(req.params.pass, resolve._doc.password, (err, same) => {
-            if (err) {
-              console.log("error in bcrypt");
-              return res
-                .status(403)
-                .json({ message: "Auth failed", status: 403 });
+        if (resolve._doc.confirmed) {
+          bcrypt.compare(
+            req.params.pass,
+            resolve._doc.password,
+            (err, same) => {
+              if (err) {
+                console.log("error in bcrypt");
+                return res
+                  .status(403)
+                  .json({ message: "Auth failed", status: 403 });
+              }
+              console.log("same and err in bcrypt : ", same, err);
+              if (same) {
+                const token = jwt.sign(
+                  {
+                    email: resolve._doc.email,
+                    userId: resolve._doc._id,
+                    role: resolve._doc.role,
+                    first_name: resolve._doc.first_name,
+                    last_name: resolve._doc.last_name,
+                  },
+                  JWT_KEY,
+                  {
+                    expiresIn: "30d",
+                  }
+                );
+                return res.status(200).json({
+                  resolve: {
+                    _id: resolve._doc._id,
+                    role: resolve._doc.role,
+                    first_name: resolve._doc.first_name,
+                    last_name: resolve._doc.last_name,
+                    email: resolve._doc.email,
+                    translatorFields: resolve._doc.translatorFields,
+                    messages: resolve._doc.messages,
+                    token,
+                  },
+                  status: 200,
+                });
+              }
+
+              console.log("same false in bcrypt");
+              res.status(403).json({ message: "Auth failed", status: 403 });
             }
-            console.log("same and err in bcrypt : ", same, err);
-            if (same) {
-              const token = jwt.sign(
-                {
-                  email: resolve._doc.email,
-                  userId: resolve._doc._id,
-                  role: resolve._doc.role,
-                },
-                JWT_KEY,
-                {
-                  expiresIn: "20h",
-                }
-              );
-              return res.status(200).json({
-                resolve: {
-                  _id: resolve._doc._id,
-                  role: resolve._doc.role,
-                  first_name: resolve._doc.first_name,
-                  last_name: resolve._doc.last_name,
-                  email: resolve._doc.email,
-                  translatorFields: resolve._doc.translatorFields,
-                  token,
-                },
-                status: 200,
-              });
-            }
-  
-            console.log("same false in bcrypt");
-            res.status(403).json({ message: "Auth failed", status: 403 });
-          });
+          );
           //it should confirm it's email
-        }else {
-          console.log("user is not confirmed - login resolve :",resolve._doc)
+        } else {
+          console.log("user is not confirmed - login resolve :", resolve._doc);
           const confirmationToken = jwt.sign(
             {
               email: resolve._doc.email,
               userId: resolve._doc._id,
               role: resolve._doc.role,
+              first_name: resolve._doc.first_name,
+              last_name: resolve._doc.last_name,
             },
             JWT_KEY,
             {
-              expiresIn: '1h',
+              expiresIn: "1h",
             }
           );
           transporter
             .sendMail(
-              sendEmail(email,"تایید ایمیل سایت ترجمه",confirmationToken )
+              sendEmail(email, "تایید ایمیل سایت ترجمه", confirmationToken)
             )
             .then((resolve1) => {
-              return res.status(201).json({ 
+              return res.status(201).json({
                 message: "sent email successfully",
                 status: 201,
-                resolve : resolve._doc,
+                resolve: resolve._doc,
               });
             })
             .catch((err) => {
@@ -313,8 +266,6 @@ router.get("/users/:email/:pass", (req, res, next) => {
               });
             });
         }
-       
-
       } else {
         console.log("user not found");
         return res.status(403).json({ message: "Auth failed", status: 403 });
@@ -476,11 +427,29 @@ router.patch("/applyForAd", checkAuth, (req, res, next) => {
           )
             .exec()
             .then((resolve) => {
-              res.status(200).json({
-                status: 200,
-                message: "add was updated successfully!!!",
-                resolve,
-              });
+              //send a msg to the employer
+              let message = messages.translatorApplied(
+                `${req.decodedJWT.first_name} ${req.decodedJWT.last_name}`,
+                adv.title
+              );
+
+              let query = { _id: adv.ownerId };
+              let update = {
+                $push: { messages: message },
+              };
+
+              User.update(query, update)
+                .exec()
+                .then((resolve2) => {
+                  res.status(200).json({
+                    status: 200,
+                    message: "applied to ad successfully",
+                    resolve,
+                  });
+                })
+                .catch((err) => {
+                  return res.status(500).json({ error: err, status: 500 });
+                });
             })
             .catch((err) => {
               return res.status(500).json({ error: err, status: 500 });
@@ -779,4 +748,125 @@ router.patch(
     }
   }
 );
+
+//get messages of a user
+router.get("/user/messages", checkAuth, (req, res, next) => {
+  let id = req.decodedJWT.userId;
+
+  User.findById(id)
+    .exec()
+    .then((resolve) => {
+      res.status(200).json({
+        status: 200,
+        message: "messages returned successfully!",
+        resolve,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err, status: 500 });
+    });
+});
+
+//get a message and seen it
+router.get("/user/getmessageandseen/:mid", checkAuth, (req, res, next) => {
+  let id = req.decodedJWT.userId;
+  let mid = req.params.mid;
+  User.findById(id)
+    .exec()
+    .then((resolve) => {
+      let message = {};
+      // console.log(resolve._doc.messages[0]._doc);
+      resolve._doc.messages.map((m) => {
+        if (String(m._doc._id) === mid) {
+          // console.log("message set");
+          message = { ...m._doc, seen: true };
+        }
+      });
+
+      let query = { "messages._id": mid };
+      let update = {
+        $set: {
+          "messages.$.seen": true,
+        },
+      };
+      User.update(query, update)
+        .exec()
+        .then((resolve2) => {
+          res.status(200).json({
+            status: 200,
+            message: "message returned and got seen successfully!",
+            msg: message,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).json({ error: err, status: 500 });
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err, status: 500 });
+    });
+});
+
 module.exports = router;
+
+//send email (test)
+// router.put("/sendemail", (req, res, next) => {
+//   User.findOne({ email: req.body.email })
+//     .exec()
+//     .then((u) => {
+//       // We have a new user!
+
+//         bcrypt.hash(req.body.password, 10, (error, hash) => {
+//           const user = new User({
+//             _id: mongoose.Types.ObjectId(),
+//             role: req.body.role,
+//             first_name: req.body.first_name,
+//             last_name: req.body.last_name,
+//             email: req.body.email,
+//             password: req.body.password,
+//           });
+//           const confirmationToken = jwt.sign(
+//             {
+//               email: user.email,
+//               userId: user._id,
+//               role: user.role,
+//             },
+//             JWT_KEY,
+//             {
+//               expiresIn: '7h', //test
+//             }
+//           );
+//           transporter
+//             .sendMail(
+//               sendEmail(req.body.email,"تایید ایمیل سایت ترجمه",confirmationToken )
+//             )
+//             .then((resolve) => {
+//               return res.status(200).json({
+//                 message: "sent email successfully",
+//                 status: 200,
+//                 answer: {
+//                  resolve,
+//                  user : user,
+//                 },
+//               });
+//             })
+//             .catch((err) => {
+//               console.log("error in send email");
+//               return res.status(500).json({
+//                 error: err,
+//                 status: 500,
+//               });
+//             });
+
+//         });
+
+//       // We have already seen this email address.
+
+//     })
+//     .catch((err) => {
+//       return res.status(500).json({
+//         error: err,
+//         status: 500,
+//       });
+//     });
+// });

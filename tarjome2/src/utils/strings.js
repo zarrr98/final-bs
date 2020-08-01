@@ -7,6 +7,7 @@ export default {
     profile: "پنل کاربری",
     projects: "پروژه ها",
     translators: "مترجم ها",
+    alertMessages : "پیام های اعلان",
   },
   screens: {
     createAccount: "حساب کاربری خود را بسازید",

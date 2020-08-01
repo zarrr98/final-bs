@@ -2,7 +2,7 @@ import React from "react";
 import "../index.css";
 import strings from "../utils/strings";
 import NavigationSystem from "../components/navigationSystem";
-import { navigationItems, URL,StrorageGetItem, StorageSetItem } from "../utils/configs";
+import { navigationItems, URL,StrorageGetItem, StorageSetItem, isEmptyObject } from "../utils/configs";
 import ProfileCard from "../components/profileCard";
 import Load from "../components/load";
 import Empty from "../components/empty";
@@ -38,7 +38,7 @@ class ProfilePage extends React.Component {
     }
   };
   componentDidMount = () => {
-    if (Object.keys(this.props.profile).length === 0 && this.props.profile.constructor === Object){
+    if (isEmptyObject(this.props.profile)){
       this.getTranslator()
     }
   }
@@ -69,7 +69,7 @@ class ProfilePage extends React.Component {
 
         {this.state.isLoading ? (
           <Load />
-        ) : this.state.profile._id ? (
+        ) : !isEmptyObject(this.state.profile) ? (
           <div className="color-behind-profile">
             <div style={{ width: "60%", height: "140px" }}></div>
             <ProfileCard profile={this.state.profile} dashboard={false} />

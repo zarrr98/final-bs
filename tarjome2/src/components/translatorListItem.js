@@ -61,6 +61,8 @@ class TranslatorListItem extends React.Component {
   componentDidMount() {
     this.findCost();
   }
+
+  
   render() {
     let CardClasses = "translator-list-item-card ";
     if (this.props.hoverable) {
@@ -124,15 +126,7 @@ class TranslatorListItem extends React.Component {
                 >
                   {"مشاهده پروفایل"}
                 </Button>
-                {/* {this.props.doingProject ? (
-                <Button
-                  variant="success"
-                  onClick={this.doneProject}
-                  className="margin-top"
-                >
-                  {strings.screens.completeProject}
-                </Button>
-              ) :  */}
+              
                 {this.props.requestedProject ? (
                   <Button
                     variant="success"
@@ -147,22 +141,7 @@ class TranslatorListItem extends React.Component {
           </Card.Body>
         </Card>
 
-        {/* <Router>
-          <Switch>
-            <Route
-              path={`/translators/:id`}
-              children={
-                <ProfilePage
-                  backDropClickHandler={this.props.backDropClickHandler}
-                  drawerToggleClickHandler={this.props.drawerToggleClickHandler}
-                  sideDrawerOpen={this.props.sideDrawerOpen}
-                  profile={this.props.profile}
-                  projectPage={this.props.isProjectPage}
-                />
-              }
-            />
-          </Switch>
-        </Router> */}
+        
       </div>
     );
   }

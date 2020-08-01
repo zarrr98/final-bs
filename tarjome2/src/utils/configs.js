@@ -20,11 +20,13 @@ export const navigationItems = {
   translatorNavigationItems: [
     { title: strings.navbar.mainPage, path: "/" },
     { title: strings.navbar.advertisements, path: "/advertisements" },
+    { title: strings.navbar.alertMessages, path: "/messages" },
     { title: strings.navbar.help, path: "/help" },
   ],
   employerNavigationItems: [
     { title: strings.navbar.mainPage, path: "/" },
     { title: strings.navbar.translators, path: "/translators" },
+    { title: strings.navbar.alertMessages, path: "/messages" },
     { title: strings.navbar.help, path: "/help" },
   ],
   notLoggedInNavigationItems: [
@@ -100,3 +102,7 @@ export const StrorageGetItem = (key, isObj) => {
     return value;
   }
 };
+
+export const isEmptyObject = (obj) => {
+ return Object.keys(obj).length === 0 && obj.constructor === Object
+}

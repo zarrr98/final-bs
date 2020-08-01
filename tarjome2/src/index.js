@@ -20,6 +20,8 @@ import MainPage from "./screens/mainPage";
 import ProfilePage from "./screens/profilePage";
 import ProjectPage from "./screens/projectPage";
 import HelpPage from "./screens/helpPage";
+import AlertMessageList from "./screens/alertMessageList";
+import MessagePage from "./screens/messagePage";
 import { StorageSetItem, StrorageGetItem } from "./utils/configs";
 
 import Tabs from "./components/tabs";
@@ -83,14 +85,13 @@ class App extends React.Component {
     if (this.state.sideDrawerOpen) {
       backDrop = <BackDrop backDropClickHandler={this.backDropClickHandler} />;
     }
-    let profile =
-       !StrorageGetItem("profile", true)
-        ? this.state.profile
-        : !this.state.profile
-        ? StrorageGetItem("profile", true)
-        : StrorageGetItem("profile", true)._id !== this.state.profile._id
-        ? this.state.profile
-        : this.state.profile;
+    let profile = !StrorageGetItem("profile", true)
+      ? this.state.profile
+      : !this.state.profile
+      ? StrorageGetItem("profile", true)
+      : StrorageGetItem("profile", true)._id !== this.state.profile._id
+      ? this.state.profile
+      : this.state.profile;
     return (
       <Router>
         <Route exact path={`/`}>
@@ -179,6 +180,16 @@ class App extends React.Component {
             setProfile={this.setProfile}
           />
         </Route>
+
+        <Route exact path={`/messages`}>
+          <AlertMessageList
+            profile={profile}
+            backDropClickHandler={this.backDropClickHandler}
+            drawerToggleClickHandler={this.drawerToggleClickHandler}
+            sideDrawerOpen={this.state.sideDrawerOpen}
+            setProfile={this.setProfile}
+          />
+        </Route>
         {/* <Route exact path={`/translators/${this.state.currentTranslator._id}`}>
           <ProfilePage
             backDropClickHandler={this.backDropClickHandler}
@@ -188,6 +199,21 @@ class App extends React.Component {
             projectPage = {this.state.isProjectPage}
           />
         </Route> */}
+        <Switch>
+          <Route
+            path={`/messages/:messageId`}
+            children={
+              <MessagePage
+                backDropClickHandler={this.backDropClickHandler}
+                drawerToggleClickHandler={this.drawerToggleClickHandler}
+                sideDrawerOpen={this.state.sideDrawerOpen}
+                setProfile={this.setProfile}
+                profile={profile}
+              />
+            }
+          />
+        </Switch>
+
         <Switch>
           <Route
             path={`/translators/:translatorId`}
