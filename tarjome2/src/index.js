@@ -22,7 +22,8 @@ import ProjectPage from "./screens/projectPage";
 import HelpPage from "./screens/helpPage";
 import AlertMessageList from "./screens/alertMessageList";
 import MessagePage from "./screens/messagePage";
-import { StorageSetItem, StrorageGetItem } from "./utils/configs";
+import { StorageSetItem, StrorageGetItem, URL } from "./utils/configs";
+import { FetchData } from "./utils/services";
 
 import Tabs from "./components/tabs";
 
@@ -57,12 +58,6 @@ class App extends React.Component {
     this.setState({
       profile: profile,
     });
-    // console.log(
-    //   "set Profile called. voroodi : ",
-    //   profile,
-    //   " and profile in states :",
-    //   profile
-    // );
   };
   updateProfile = (translatorFields) => {
     const { profile } = this.state;
@@ -80,11 +75,7 @@ class App extends React.Component {
     this.setState({ isProjectPage });
   };
 
-  render() {
-    let backDrop;
-    if (this.state.sideDrawerOpen) {
-      backDrop = <BackDrop backDropClickHandler={this.backDropClickHandler} />;
-    }
+  getProfile = () => {
     let profile = !StrorageGetItem("profile", true)
       ? this.state.profile
       : !this.state.profile
@@ -92,6 +83,48 @@ class App extends React.Component {
       : StrorageGetItem("profile", true)._id !== this.state.profile._id
       ? this.state.profile
       : this.state.profile;
+
+    return profile;
+  };
+
+  updateProfileFromServer = async () => {
+    let profile = this.getProfile();
+    if (profile) {
+      let data = await FetchData(
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${profile._id}`,
+        profile ? profile.token : ""
+      );
+
+      if (data) {
+        if (data.status === 200) {
+          let newProfile = { ...profile, ...data.resolve };
+          console.log("$$$$ new prifile : ", newProfile)
+          this.setProfile(newProfile);
+          StorageSetItem("profile", newProfile, true);
+        } else if (data.status === 413) {
+          this.setProfile(null);
+
+          window.location = "/";
+          localStorage.removeItem("profile");
+        }
+      }
+    }
+  };
+
+  componentDidMount = () => {
+    let updateProfile = setInterval(this.updateProfileFromServer, 30000); //every 1 minutes (60s * 1000)
+    this.setState({updateProfile})
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.state.updateProfile)
+  }
+  render() {
+    let backDrop;
+    if (this.state.sideDrawerOpen) {
+      backDrop = <BackDrop backDropClickHandler={this.backDropClickHandler} />;
+    }
+    let profile = this.getProfile();
     return (
       <Router>
         <Route exact path={`/`}>

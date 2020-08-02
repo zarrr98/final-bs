@@ -3,7 +3,16 @@ import "../index.css";
 import strings from "../utils/strings";
 import DrawerToggleButton from "./drawerToggleButton";
 import { Link } from "react-router-dom";
-import { FaCircle } from "react-icons/fa";
+import {
+  FaCircle,
+  FaUserAlt,
+  FaRegBell,
+  FaUserFriends,
+  FaWindowRestore,
+  FaHome,
+  FaFlag,
+  FaSignInAlt,
+} from "react-icons/fa";
 import { StrorageGetItem } from "../utils/configs";
 
 export default class Toolbar extends React.Component {
@@ -41,18 +50,36 @@ export default class Toolbar extends React.Component {
     profile &&
       profile.messages &&
       profile.messages.map((m, i) => {
-        console.log("message ", i, " in setnewmessages =>", m);
+        // console.log("message ", i, " in setnewmessages =>", m);
         if (!m.seen) {
           newMessage = true;
         }
       });
-    console.log("and newmessage is :", newMessage);
+    // console.log("and newmessage is :", newMessage);
     return newMessage;
   };
-  // componentDidMount = () => {
-  //   this.props.selectedTab === strings.navbar.mainPage &&
-  //     window.addEventListener("scroll", this.handleToolbarStyle);
-  // };
+  getIcon = (title) => {
+    if (title === strings.navbar.alertMessages) {
+      return <FaRegBell />;
+    } else if (title === strings.navbar.profile) {
+      return <FaUserAlt />;
+    } else if (title === strings.navbar.translators) {
+      return <FaUserFriends />;
+    } else if (title === strings.navbar.advertisements) {
+      return <FaWindowRestore />;
+    } else if (title === strings.navbar.mainPage) {
+      return <FaHome />;
+    } else if (title === strings.navbar.help) {
+      return <FaFlag />;
+    } else if (title === strings.navbar.signup_login) {
+      return <FaSignInAlt />;
+    } else return null;
+  };
+
+  componentDidMount = () => {
+    this.props.selectedTab === strings.navbar.mainPage &&
+      window.addEventListener("scroll", this.handleToolbarStyle);
+  };
 
   componentWillUnmount = () => {
     this.props.selectedTab === strings.navbar.mainPage &&
@@ -79,9 +106,14 @@ export default class Toolbar extends React.Component {
           </div>
           <div className={toolbar_logo_classes}>
             {this.props.loggedIn ? (
-              <Link to="/profile">{strings.navbar.profile}</Link>
+              <Link to="/profile">
+                {this.props.getIcon(strings.navbar.profile)} {strings.navbar.profile}
+              </Link>
             ) : (
-              <Link to="/login">{strings.navbar.signup_login}</Link>
+              <Link to="/login">
+                {this.props.getIcon(strings.navbar.signup_login)}{" "}
+                {strings.navbar.signup_login}
+              </Link>
             )}
           </div>
           {/* <div className='spacer'/> */}
@@ -94,10 +126,13 @@ export default class Toolbar extends React.Component {
                 let text =
                   newMessage && item.title === strings.navbar.alertMessages ? (
                     <span>
-                      <FaCircle className="new-msg-icon" /> {item.title}
+                      <FaCircle className="new-msg-icon" />{" "}
+                      {this.props.getIcon(item.title , true)} {item.title}
                     </span>
                   ) : (
-                    item.title
+                    <span>
+                      {this.props.getIcon(item.title)} {item.title}
+                    </span>
                   );
                 return (
                   <li className={classes}>

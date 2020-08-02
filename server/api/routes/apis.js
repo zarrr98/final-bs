@@ -538,6 +538,7 @@ router.get("/projectTranslator/:uid", checkAuth, (req, res, next) => {
           last_name: resolve.last_name,
           email: resolve.email,
           translatorFields: resolve.translatorFields,
+          messages : resolve.messages
         },
       });
     })

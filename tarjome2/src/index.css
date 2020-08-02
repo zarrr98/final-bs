@@ -486,6 +486,14 @@ body {
   width : 10px;
   height: 10px;
 }
+.orange-icon {
+  color: #ff751a;
+}
+
+.height-behind-msg {
+  width: 60%;
+  height: 200px;
+}
 
 @media (max-width: 768px) {
   .toolbar_navigation_items {
@@ -512,6 +520,10 @@ body {
   .card-footer-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .height-behind-msg {
+    height: 150px;
   }
 }
 

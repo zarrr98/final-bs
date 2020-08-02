@@ -195,7 +195,7 @@ class AdvertisementListItem extends React.Component {
             ) : null}
 
             {/* upload buttons : */}
-            <div>
+            <div className="margin-right">
               {(ad.status === strings.adStatus.doing &&
                 !employer &&
                 translator &&

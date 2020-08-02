@@ -97,27 +97,27 @@ class MessagePage extends React.Component {
           loggedIn={true}
           selectedTab={strings.navbar.alertMessages}
         />
-        <main className="main-content">
-          {this.state.isLoading ? (
+        {this.state.isLoading ? (
+          <main className="main-content">
             <Load />
-          ) : !isEmptyObject(this.state.message) ? (
+          </main>
+        ) : !isEmptyObject(this.state.message) ? (
+          <div className="color-behind-profile">
+            <div className="height-behind-msg"></div>
             <Card className="profile-card">
               <Card.Body>
                 <Card.Title className="purple-txt">
                   <FaCommentDots /> {this.state.message.topic}
                 </Card.Title>
-                {/* <Card.Subtitle className="mb-2 text-muted">
-                {roleInfo}
-                <br />
-                {this.props.profile.email}
-              </Card.Subtitle> */}
                 <Card.Text>{this.state.message.text}</Card.Text>
               </Card.Body>
             </Card>
-          ) : (
+          </div>
+        ) : (
+          <main className="main-content">
             <Empty text={"مشکلی پیش آمده. لطفا صفحه را رفرش کنید"} />
-          )}
-        </main>
+          </main>
+        )}
       </React.Fragment>
     );
   }

@@ -1,5 +1,6 @@
 import strings from "./strings";
 
+
 export const URL = {
   protocol: "http",
   baseURL: "localhost",
@@ -18,7 +19,7 @@ for (const key in strings.language) {
 
 export const navigationItems = {
   translatorNavigationItems: [
-    { title: strings.navbar.mainPage, path: "/" },
+    { title:strings.navbar.mainPage, path: "/" },
     { title: strings.navbar.advertisements, path: "/advertisements" },
     { title: strings.navbar.alertMessages, path: "/messages" },
     { title: strings.navbar.help, path: "/help" },
