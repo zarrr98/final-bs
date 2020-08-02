@@ -15,6 +15,7 @@ import {
   FaHome,
   FaFlag,
   FaSignInAlt,
+  FaWarehouse
 } from "react-icons/fa";
 
 export default class NavigationSystem extends React.Component {

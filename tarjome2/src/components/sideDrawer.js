@@ -3,7 +3,7 @@ import "../index.css";
 import { Link, withRouter } from "react-router-dom";
 import { StrorageGetItem } from "../utils/configs";
 import strings from "../utils/strings";
-import { FaCircle ,FaBookOpen} from "react-icons/fa";
+import { FaCircle, FaBookOpen } from "react-icons/fa";
 
 export default class SideDrawer extends React.Component {
   state = {
@@ -40,29 +40,36 @@ export default class SideDrawer extends React.Component {
     let newMessage = this.setNewMessage();
     return (
       <nav className={drawerClasses}>
-        <FaBookOpen className="icon-in-sidebar"/>
-        <ul>
-          {this.props.navigationItems.map((item) => {
-            let classes =
-              item.title === this.props.selectedTab ? "selected-tab" : "";
-            let text =
-              newMessage && item.title === strings.navbar.alertMessages ? (
-                <span>
-                  <FaCircle className="new-msg-icon" />{" "}
-                  {this.props.getIcon(item.title , true)} {item.title}
-                </span>
-              ) : (
-                <span>
-                  {this.props.getIcon(item.title)} {item.title}
-                </span>
+        <div className="sidedrawer-content">
+          {/* <div > */}
+          <FaBookOpen  className="icon-in-sidebar"/>
+          {/* <p>سایت ترجمه</p>
+          </div>
+           */}
+         
+          <ul>
+            {this.props.navigationItems.map((item) => {
+              let classes =
+                item.title === this.props.selectedTab ? "selected-tab" : "";
+              let text =
+                newMessage && item.title === strings.navbar.alertMessages ? (
+                  <span>
+                    <FaCircle className="new-msg-icon" />{" "}
+                    {this.props.getIcon(item.title, true)} {item.title}
+                  </span>
+                ) : (
+                  <span>
+                    {this.props.getIcon(item.title)} {item.title}
+                  </span>
+                );
+              return (
+                <li className={classes}>
+                  <Link to={item.path}>{text}</Link>
+                </li>
               );
-            return (
-              <li className={classes}>
-                <Link to={item.path}>{text}</Link>
-              </li>
-            );
-          })}
-        </ul>
+            })}
+          </ul>
+        </div>
       </nav>
     );
   }

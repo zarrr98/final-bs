@@ -111,7 +111,7 @@ body {
 .side-drawer {
   height: 100%;
   /* background-color: rgb(90, 4, 79); */
-  background:url("./assets/images/white-texture.png") repeat rgb(90, 4, 79) ;
+  background:url("./assets/images/asfalt-light.png") repeat rgb(90, 4, 79) ;
   /* subtle-grunge */
   position: fixed;
   box-shadow: -1px 0px 7px rgba(0, 0, 0, 0.5);
@@ -128,14 +128,22 @@ body {
 .side-drawer.open {
   transform: translateX(125%);
 }
+
+.sidedrawer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
 .icon-in-sidebar {
-  position: absolute;
+  /* position: absolute; */
   width: 50%;
-  height: 15%;
+  height: 35%;
   color: #ffffff;
-  margin : auto;
-  top : 3%;
-  right: 25%;
+  margin : 1% auto;
+  /* margin : auto; */
+  /* top : 3%; */
+  /* right: 25%; */
 }
 .side-drawer ul {
   /* position: absolute; */
@@ -143,7 +151,8 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  margin-top: 50%;
+  
+  /* margin-top: 50%; */
   /* justify-content: center; */
 }
 .side-drawer li {
