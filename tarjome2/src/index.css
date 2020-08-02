@@ -15,12 +15,18 @@ body {
 .toolbar {
   position: fixed;
   width: 100%;
-  background-color: rgb(90, 4, 79);
+  /* background-image: url('./assets/images/pur.jpg');
+  background-color: rgb(90, 4, 79); */
+  background:url("./assets/images/asfalt-light.png") repeat rgb(90, 4, 79) ;
+  /* background-size: initial; */
   top: 0;
   right: 0;
   height: 100px;
   z-index: 99;
 }
+
+
+
 .transparent-toolbar {
   background-color: transparent;
   position: fixed;
@@ -104,7 +110,9 @@ body {
 
 .side-drawer {
   height: 100%;
-  background-color: rgb(90, 4, 79);
+  /* background-color: rgb(90, 4, 79); */
+  background:url("./assets/images/white-texture.png") repeat rgb(90, 4, 79) ;
+  /* subtle-grunge */
   position: fixed;
   box-shadow: -1px 0px 7px rgba(0, 0, 0, 0.5);
   top: 0;
@@ -116,14 +124,26 @@ body {
   transform: translateX(240%);
   transition: transform 0.3s ease-out;
 }
+
 .side-drawer.open {
   transform: translateX(125%);
 }
+.icon-in-sidebar {
+  position: absolute;
+  width: 50%;
+  height: 15%;
+  color: #ffffff;
+  margin : auto;
+  top : 3%;
+  right: 25%;
+}
 .side-drawer ul {
+  /* position: absolute; */
   height: 100%;
   list-style: none;
   display: flex;
   flex-direction: column;
+  margin-top: 50%;
   /* justify-content: center; */
 }
 .side-drawer li {

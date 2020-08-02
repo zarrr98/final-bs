@@ -3,7 +3,7 @@ import "../index.css";
 import { Link, withRouter } from "react-router-dom";
 import { StrorageGetItem } from "../utils/configs";
 import strings from "../utils/strings";
-import { FaCircle } from "react-icons/fa";
+import { FaCircle ,FaBookOpen} from "react-icons/fa";
 
 export default class SideDrawer extends React.Component {
   state = {
@@ -40,6 +40,7 @@ export default class SideDrawer extends React.Component {
     let newMessage = this.setNewMessage();
     return (
       <nav className={drawerClasses}>
+        <FaBookOpen className="icon-in-sidebar"/>
         <ul>
           {this.props.navigationItems.map((item) => {
             let classes =
