@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema(
     last_name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    confirmed: { type: Boolean, default: false }, // change
+    confirmed: { type: Boolean, default: false }, 
     messages: [
       {
         _id: mongoose.Schema.Types.ObjectId,

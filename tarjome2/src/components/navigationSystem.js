@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Toolbar from "./toolbar";
 import SideDrawer from "./sideDrawer";
 import BackDrop from "./Backdrop";
-import { navigationItems } from "../utils/configs";
+import { navigationItems, StrorageGetItem } from "../utils/configs";
 import {
   FaCircle,
   FaUserAlt,
@@ -50,6 +50,23 @@ export default class NavigationSystem extends React.Component {
       return <FaSignInAlt />;
     } else return null;
   };
+
+  setNewMessage = () => {
+    let profile = StrorageGetItem("profile", true);
+    // console.log("profile in setnewmessages : ", profile)
+    let newMessage = false;
+    profile &&
+      profile.messages &&
+      profile.messages.map((m, i) => {
+        // console.log("message ", i, " in setnewmessages =>", m);
+        if (!m.seen) {
+          newMessage = true;
+        }
+      });
+    // console.log("and newmessage is :", newMessage);
+    //this.setState({ newMessage });
+    return newMessage;
+  };
   render() {
     let backDrop;
     if (this.state.sideDrawerOpen) {
@@ -57,6 +74,8 @@ export default class NavigationSystem extends React.Component {
         <BackDrop backDropClickHandler={this.props.backDropClickHandler} />
       );
     }
+
+    let newMessage = this.setNewMessage()
     return (
       <React.Fragment>
         <Toolbar
@@ -65,12 +84,14 @@ export default class NavigationSystem extends React.Component {
           loggedIn={this.props.loggedIn}
           selectedTab={this.props.selectedTab}
           getIcon={this.getIcon}
+          newMessage = {newMessage}
         />
         <SideDrawer
           show={this.state.sideDrawerOpen}
           navigationItems={this.props.navigationItems}
           selectedTab={this.props.selectedTab}
           getIcon={this.getIcon}
+          newMessage = {newMessage}
         />
         {backDrop}
       </React.Fragment>

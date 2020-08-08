@@ -8,6 +8,7 @@ import { FaCircle, FaBookOpen } from "react-icons/fa";
 export default class SideDrawer extends React.Component {
   state = {
     show: this.props.show,
+    newMessage : this.props.newMessage,
   };
 
   setNewMessage = () => {
@@ -23,7 +24,8 @@ export default class SideDrawer extends React.Component {
         }
       });
     // console.log("and newmessage is :", newMessage);
-    return newMessage;
+    this.setState({newMessage})
+    //return newMessage;
   };
 
   componentWillReceiveProps(nextProps) {
@@ -32,12 +34,20 @@ export default class SideDrawer extends React.Component {
       this.setState({ show: nextProps.show });
     }
   }
+  componentDidMount = () => {
+    let updateNewMessage = setInterval(this.setNewMessage, 5000);
+    this.setState({ updateNewMessage });
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.state.updateNewMessage);
+  }
   render() {
     let drawerClasses = "side-drawer";
     if (this.state.show) {
       drawerClasses = "side-drawer open";
     }
-    let newMessage = this.setNewMessage();
+    let newMessage = this.state.newMessage;
     return (
       <nav className={drawerClasses}>
         <div className="sidedrawer-content">

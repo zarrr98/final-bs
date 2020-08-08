@@ -789,23 +789,7 @@ router.patch(
   }
 );
 
-//get messages of a user
-router.get("/user/messages", checkAuth, (req, res, next) => {
-  let id = req.decodedJWT.userId;
 
-  User.findById(id)
-    .exec()
-    .then((resolve) => {
-      res.status(200).json({
-        status: 200,
-        message: "messages returned successfully!",
-        resolve,
-      });
-    })
-    .catch((err) => {
-      return res.status(500).json({ error: err, status: 500 });
-    });
-});
 
 //get a message and seen it
 router.get("/user/getmessageandseen/:mid", checkAuth, (req, res, next) => {
@@ -848,6 +832,28 @@ router.get("/user/getmessageandseen/:mid", checkAuth, (req, res, next) => {
 });
 
 module.exports = router;
+
+
+
+
+//get messages of a user
+// router.get("/user/messages", checkAuth, (req, res, next) => {
+//   let id = req.decodedJWT.userId;
+
+//   User.findById(id)
+//     .exec()
+//     .then((resolve) => {
+//       res.status(200).json({
+//         status: 200,
+//         message: "messages returned successfully!",
+//         resolve,
+//       });
+//     })
+//     .catch((err) => {
+//       return res.status(500).json({ error: err, status: 500 });
+//     });
+// });
+
 
 //send email (test)
 // router.put("/sendemail", (req, res, next) => {

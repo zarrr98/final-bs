@@ -25,7 +25,7 @@ export default class Toolbar extends React.Component {
         ? "transparent-toolbar"
         : "toolbar",
     prevScrollpos: window.pageYOffset,
-    //newMessage: this.props.newMessage,
+    newMessage: this.props.newMessage,
   };
   handleToolbarStyle = () => {
     console.log("handle toolabar nav");
@@ -56,7 +56,8 @@ export default class Toolbar extends React.Component {
         }
       });
     // console.log("and newmessage is :", newMessage);
-    return newMessage;
+    this.setState({ newMessage });
+    //return newMessage;
   };
   getIcon = (title) => {
     if (title === strings.navbar.alertMessages) {
@@ -79,11 +80,17 @@ export default class Toolbar extends React.Component {
   componentDidMount = () => {
     this.props.selectedTab === strings.navbar.mainPage &&
       window.addEventListener("scroll", this.handleToolbarStyle);
+
+    this.setNewMessage();
+    let updateNewMessage = setInterval(this.setNewMessage, 5000);
+    this.setState({ updateNewMessage });
   };
 
   componentWillUnmount = () => {
     this.props.selectedTab === strings.navbar.mainPage &&
       window.removeEventListener("scroll", this.handleToolbarStyle);
+
+    clearInterval(this.state.updateNewMessage);
   };
   componentWillReceiveProps(nextProps) {
     if (nextProps.newMessage !== this.state.newMessage) {
@@ -93,7 +100,7 @@ export default class Toolbar extends React.Component {
   }
   render() {
     //console.log("### this.props.navigationItems : ",this.props.navigationItems)
-    let newMessage = this.setNewMessage();
+    let newMessage = this.state.newMessage;
     let toolbar_logo_classes =
       this.props.selectedTab === strings.navbar.profile
         ? "selected-tab toolbar_logo"
@@ -107,7 +114,8 @@ export default class Toolbar extends React.Component {
           <div className={toolbar_logo_classes}>
             {this.props.loggedIn ? (
               <Link to="/profile">
-                {this.props.getIcon(strings.navbar.profile)} {strings.navbar.profile}
+                {this.props.getIcon(strings.navbar.profile)}{" "}
+                {strings.navbar.profile}
               </Link>
             ) : (
               <Link to="/login">
@@ -127,7 +135,7 @@ export default class Toolbar extends React.Component {
                   newMessage && item.title === strings.navbar.alertMessages ? (
                     <span>
                       <FaCircle className="new-msg-icon" />{" "}
-                      {this.props.getIcon(item.title , true)} {item.title}
+                      {this.props.getIcon(item.title, true)} {item.title}
                     </span>
                   ) : (
                     <span>
