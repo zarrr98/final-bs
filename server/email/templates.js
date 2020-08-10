@@ -1,16 +1,16 @@
-const sendEmail = (to , subject , token) => {
-  const url = `http://localhost:4000/confirmation/${token}`
- // let openUrl = () => { window.open(url)}
+const sendEmail = (to, subject, token) => {
+  const url = `http://localhost:4000/confirmation/${token}`;
+  // let openUrl = () => { window.open(url)}
   return {
     to,
     subject,
-    html : 
-    `<!DOCTYPE html>
+    html: `<!DOCTYPE html>
     <html>
     <head>
     <style>
     .container {
       position: relative;
+      direction: rtl;
     }
     
     .center {
@@ -55,10 +55,13 @@ const sendEmail = (to , subject , token) => {
       <div class="center">
       <br/>
       <p>
-      برای تایید آدرس ایمیل و فعال سازی حساب کاربری خود در سایت ترجمه، روی لینک زیر کلیک کنید.
+      کاربر عزیز، سلام
+      </p> 
+      <p>
+لطفا برای فعالسازی حساب کاربری خود و تکمیل مراحل ثبت نام از طریق دکمه زیر اقدام کنید.
       </p>
      
-   <a href="${url}">${url}</a>
+   <a href="${url}"><button class="button">فعال سازی حساب کاربری</button></a>
   
       
       <br/>
@@ -72,10 +75,8 @@ const sendEmail = (to , subject , token) => {
     
     </body>
     </html>
-    `
-  }
-}
-
-
+    `,
+  };
+};
 
 module.exports = sendEmail;

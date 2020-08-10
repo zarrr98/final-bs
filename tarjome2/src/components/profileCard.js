@@ -11,11 +11,11 @@ class ProfileCard extends React.Component {
   };
   logout = () => {
     this.props.setProfile(null);
-    
+    localStorage.removeItem("profile")
     this.props.history.push({
       pathname: `/`
     });
-    localStorage.removeItem("profile")
+   
   };
   render() {
     let translator = this.props.profile ? this.props.profile.role === strings.screens.translator : false;

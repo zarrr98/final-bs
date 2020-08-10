@@ -18,41 +18,29 @@ import { FetchData } from "../utils/services";
 export default class AlertMessageList extends React.Component {
   state = {
     messages: StrorageGetItem("profile", true)
-      ? StrorageGetItem("profile", true).messages.reverse()
+      ? StrorageGetItem("profile", true).messages
       : [],
+    // messages: this.props.profile ? this.props.profile.messages.reverse() : [],
     // filteredTranslators: [],
     isLoading: false,
   };
 
-  // checkResponseStatus = (response) => {
-  //   if (!response) {
-  //     return;
-  //   } else if (response.status === 200) {
-  //     this.setState({
-  //       translators: response.resolve,
-  //       filteredTranslators: response.resolve,
-  //     });
-  //   } else if (response.status === 413) {
-  //     this.props.setProfile(null);
-
-  //     window.location = "/";
-  //     localStorage.removeItem("profile");
-  //   }
-  // };
-  // getMessages = async () => {
-  //   // this.setState({ isLoading: true });
-  //   // const data = await FetchData(
-  //   //   `${URL.protocol}://${URL.baseURL}:${URL.port}/translators`,
-  //   //   this.props.profile ? this.props.profile.token : ""
-  //   // );
-  //   // this.setState({ isLoading: false });
-  //   // this.checkResponseStatus(data);
-  // };
-  // componentDidMount() {
-  //   this.getMessages();
-  // }
+  reverseMessages = (messages) => {
+    let msgs = messages;
+    if (messages && messages.length > 0){
+      if (messages[0].topic === strings.screens.welcomeMessageTopic){
+        msgs = messages.reverse();
+      }
+     
+    }
+    return msgs;
+  }
   render() {
-    console.log("this.state.translators =>>", this.state.filteredTranslators);
+    let messages = this.reverseMessages(this.state.messages)
+    // console.log(
+    //   "Fucking reversed messages : =>>",
+    //   shit
+    // );
     let { profile } = this.props;
     return (
       <div className="background">
@@ -73,17 +61,20 @@ export default class AlertMessageList extends React.Component {
         <main className="main-content">
           {this.state.isLoading ? (
             <Load />
-          ) : this.state.messages.length > 0 ? (
+          ) : messages && messages.length > 0 ? (
             <ListGroup>
-              {this.state.messages.map((m) => (
-                <ListGroup.Item className="list-item-container">
-                  <MessageListItem
-                    hoverable={true}
-                    message={m}
-                    profile={this.props.profile}
-                  />
-                </ListGroup.Item>
-              ))}
+              {messages.map((m , idx) => {
+               // console.log("fucking message number" , idx , " is : ", m)
+                return (
+                  <ListGroup.Item className="list-item-container">
+                    <MessageListItem
+                      hoverable={true}
+                      message={m}
+                      profile={this.props.profile}
+                    />
+                  </ListGroup.Item>
+                );
+              })}
             </ListGroup>
           ) : (
             <Empty />

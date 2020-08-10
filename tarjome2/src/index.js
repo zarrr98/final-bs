@@ -77,12 +77,12 @@ class App extends React.Component {
 
   getProfile = () => {
     let profile = !StrorageGetItem("profile", true)
-      ? this.state.profile
+      ? this.state.profile && console.log("get profile - a")
       : !this.state.profile
-      ? StrorageGetItem("profile", true)
+      ? StrorageGetItem("profile", true) && console.log("get profile - b")
       : StrorageGetItem("profile", true)._id !== this.state.profile._id
-      ? this.state.profile
-      : this.state.profile;
+      ? this.state.profile && console.log("get profile - c")
+      : this.state.profile && console.log("get profile - d")
 
     return profile;
   };
@@ -90,13 +90,14 @@ class App extends React.Component {
   updateProfileFromServer = async () => {
     let profile = this.getProfile();
     if (profile) {
+      console.log("$$$$old profile in update profile : ", profile)
       let data = await FetchData(
         `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${profile._id}`,
         profile ? profile.token : ""
       );
 
       if (data) {
-        if (data.status === 200) {
+        if (data.status === 200 && profile._id === data.resolve._id) {
           let newProfile = { ...profile, ...data.resolve };
           console.log("$$$$ new prifile : ", newProfile)
           this.setProfile(newProfile);

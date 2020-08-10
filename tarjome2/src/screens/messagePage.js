@@ -23,7 +23,7 @@ class MessagePage extends React.Component {
   };
 
   updateMessagesInStorage = (messageId) => {
-    let profile = StrorageGetItem("profile", true);
+    let profile = this.props.profile;
     if (profile) {
       let messages = profile.messages;
 
@@ -45,6 +45,7 @@ class MessagePage extends React.Component {
     let messageId = this.props.match.params.messageId;
     console.log("Message Id: ", messageId);
     let profile = this.props.profile;
+    console.log("@@@profile before updating messages in message page : ", profile)
     this.setState({ isLoading: true });
     let data = await FetchData(
       `${URL.protocol}://${URL.baseURL}:${URL.port}/user/getmessageandseen/${messageId}`,
