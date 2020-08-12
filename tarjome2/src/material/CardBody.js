@@ -23,7 +23,7 @@ export default function CardBody(props) {
     [className]: className !== undefined,
   });
 
-  // console.log("%$%$%$ alertClasses in fucking cardBody : ", props.alertClasses , " and fucking cardbodyclasses : ", cardBodyClasses)
+ 
   return (
     <div className={`${cardBodyClasses}`} {...rest}>
       {children}

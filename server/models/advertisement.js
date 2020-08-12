@@ -14,7 +14,7 @@ const adSchema = mongoose.Schema(
     field: String,
     deadline: String,
     explanation: String,
-    status: { type: String, default: "requested" }, //[requested , doing , done]
+    status: { type: String, default: "requested", enum : ["requested", "doing", "done"] }, //[requested , doing , done]
     translationFile : { type: String, required: true },
     translatedFile : String,
   },

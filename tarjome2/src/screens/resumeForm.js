@@ -28,7 +28,7 @@ class ResumeForm extends React.Component {
       errorMessage: "",
       required: true,
       validationFunction: (value) => {
-        return !!value && value.length >= 0;
+        return !!value && value.length > 0;
       },
       unvalidMessage: strings.screens.errorEmpty,
     },

@@ -77,12 +77,12 @@ class App extends React.Component {
 
   getProfile = () => {
     let profile = !StrorageGetItem("profile", true)
-      ? this.state.profile && console.log("get profile - a")
+      ? this.state.profile 
       : !this.state.profile
-      ? StrorageGetItem("profile", true) && console.log("get profile - b")
+      ? StrorageGetItem("profile", true)
       : StrorageGetItem("profile", true)._id !== this.state.profile._id
-      ? this.state.profile && console.log("get profile - c")
-      : this.state.profile && console.log("get profile - d")
+      ? this.state.profile 
+      : this.state.profile
 
     return profile;
   };

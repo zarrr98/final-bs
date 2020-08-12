@@ -37,10 +37,6 @@ export default class AlertMessageList extends React.Component {
   }
   render() {
     let messages = this.reverseMessages(this.state.messages)
-    // console.log(
-    //   "Fucking reversed messages : =>>",
-    //   shit
-    // );
     let { profile } = this.props;
     return (
       <div className="background">
@@ -64,7 +60,6 @@ export default class AlertMessageList extends React.Component {
           ) : messages && messages.length > 0 ? (
             <ListGroup>
               {messages.map((m , idx) => {
-               // console.log("fucking message number" , idx , " is : ", m)
                 return (
                   <ListGroup.Item className="list-item-container">
                     <MessageListItem

@@ -3,7 +3,7 @@ import "../index.css";
 import strings from "../utils/strings";
 import { ButtonGroup, Button, Form, Spinner } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
-import { URL,StorageSetItem } from "../utils/configs";
+import { URL,StorageSetItem, StrorageGetItem } from "../utils/configs";
 import {FetchData} from '../utils/services'
 
 class LoginPage extends React.Component {
@@ -64,6 +64,7 @@ class LoginPage extends React.Component {
      // localStorage.setItem("profile" , JSON.stringify(response.resolve))
      localStorage.removeItem("profile")
      StorageSetItem("profile", response.resolve , true)
+    // console.log("it is " , StrorageGetItem("ptofile" , true));
       if (
         response.resolve.role === strings.screens.translator &&
         !response.resolve.translatorFields
