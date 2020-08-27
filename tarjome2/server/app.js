@@ -12,7 +12,7 @@ mongoose.connect("mongodb://zarrr98:95243045@cluster0-shard-00-00-ediy8.mongodb.
     })
 mongoose.Promise = global.Promise    
 app.use(cors());
-app.use('/build/translationfiles',express.static("build/translationfiles"))  
+app.use('/translationfiles',express.static("translationfiles"))  
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use('/server', routes)
