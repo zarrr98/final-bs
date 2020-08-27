@@ -122,7 +122,7 @@ class LoginPage extends React.Component {
     if (!error) {
       this.setState({ isLoading: true });
       const data = await FetchData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/users/${values["email"]}/${values["password"]}`
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/users/${values["email"]}/${values["password"]}`
       );
       this.setState({ isLoading: false });
       this.checkResponseStatus(data);

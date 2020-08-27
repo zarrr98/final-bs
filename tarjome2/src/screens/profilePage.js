@@ -20,7 +20,7 @@ class ProfilePage extends React.Component {
     let prof = StrorageGetItem("profile", true)
     this.setState({ isLoading: true });
     let data = await FetchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${translatorId}`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/projectTranslator/${translatorId}`,
       prof ? prof.token : ""
     );
     this.setState({ isLoading: false });

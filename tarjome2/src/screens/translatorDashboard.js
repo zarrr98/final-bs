@@ -78,7 +78,7 @@ export default class TranslatorDashboard extends React.Component {
   refreshProjects = async () => {
     this.setState({ isLoading: true });
     const data = await FetchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/translatorProjects`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/translatorProjects`,
       this.props.profile ? this.props.profile.token : ""
     );
 

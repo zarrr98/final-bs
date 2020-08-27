@@ -116,7 +116,7 @@ export default class AdvertisementList extends React.Component {
   getAdvertisements = async () => {
     this.setState({ isLoading: true });
     const data = await FetchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/advertisements`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/advertisements`,
       this.props.profile ? this.props.profile.token : ""
     );
     this.setState({ isLoading: false });

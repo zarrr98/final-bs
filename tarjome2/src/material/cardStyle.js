@@ -4,7 +4,7 @@ import {
   hexToRgb
 } from "./material-dashboard-react.js";
 
-const cardStyle = {
+const cardStyle = { 
   card: {
     border: "0",
     marginBottom: "30px",

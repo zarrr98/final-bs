@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import '../index.css'
-// @material-ui/icons
+// @material-ui/icons 
 
 // core components
 import styles from "./cardHeaderStyle";

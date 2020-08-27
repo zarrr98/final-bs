@@ -60,7 +60,7 @@ export default class EmployerDashboard extends React.Component {
   refreshProjects = async () => {
     this.setState({ isLoading: true });
     const data = await FetchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/employerProjects`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/employerProjects`,
       this.props.profile ? this.props.profile.token : ""
     );
 

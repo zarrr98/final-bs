@@ -97,7 +97,7 @@ export default class UploadFileModal extends React.Component {
       let sendData = {...values , adName : ad.title, ownerId: ad.ownerId}
       this.setState({ isLoading: true });
       const data = await SendDataAndFile(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/upload/translatedFile/${ad._id}`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/upload/translatedFile/${ad._id}`,
         sendData,
         profile ? profile.token : "",
         "PATCH"

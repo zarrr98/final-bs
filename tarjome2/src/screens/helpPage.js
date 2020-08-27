@@ -37,16 +37,16 @@ export default class HelpPage extends React.Component {
             })}
           </ul>
           {strings.helpPage.topics.map((item, i) => {
-            return (
+            return ( 
               <GridItem
                 xs={12}
                 sm={12}
                 md={12}
                 className="right-aligned "
-                id={`item${i}`}
+                id={`item${i}`} 
               >
-                <Card className="extra-margin-top">
-                  <CardHeader color="primary" className="center-aligned">
+                <Card className="extra-margin-top" >
+                  <CardHeader color="primary" className="center-aligned" >
                     <h4>{item.title}</h4>
                   </CardHeader>
                   <CardBody>

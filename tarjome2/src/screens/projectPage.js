@@ -56,7 +56,7 @@ class ProjectPage extends React.Component {
     this.setState({ isLoading: true });
     if (ad.status === strings.adStatus.requested) {
       data = await PutData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslators`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/projectTranslators`,
         { offers: ad.requestedTranslators },
         this.props.profile ? this.props.profile.token : ""
       );
@@ -73,7 +73,7 @@ class ProjectPage extends React.Component {
       }
     } else {
       data = await FetchData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${ad.translator.id}`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/projectTranslator/${ad.translator.id}`,
         this.props.profile ? this.props.profile.token : ""
       );
       this.setState({ isLoading: false });

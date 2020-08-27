@@ -63,7 +63,7 @@ class AlertModal extends React.Component {
     console.log("@@@@sendData : ", sendData);
     this.setState({ isLoading: true });
     const data = await PatchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/chooseTranslator/${ad._id}`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/chooseTranslator/${ad._id}`,
       sendData,
       profile ? profile.token : ""
     );
@@ -77,7 +77,7 @@ class AlertModal extends React.Component {
     let { profile, ad, choosenTranslator } = this.props;
     this.setState({ isLoading: true });
     const data = await PatchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/employer/done/${ad._id}`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/employer/done/${ad._id}`,
       {},
       profile ? profile.token : ""
     );
@@ -90,7 +90,7 @@ class AlertModal extends React.Component {
     let { profile, ad } = this.props;
     this.setState({ isLoading: true });
     const data = await PatchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/translator/done/${ad._id}`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/translator/done/${ad._id}`,
       {},
       profile ? profile.token : ""
     );

@@ -224,7 +224,7 @@ export default class CreateAdModal extends React.Component {
       console.log("Everything is ok in submit : values => ", values);
       this.setState({ isLoading: true });
       const data = await SendDataAndFile(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/addAdvertisement`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/addAdvertisement`,
         values,
         this.props.profile ? this.props.profile.token : "",
         "PUT"

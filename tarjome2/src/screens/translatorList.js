@@ -95,7 +95,7 @@ export default class TranslatorList extends React.Component {
   getTranslators = async () => {
     this.setState({ isLoading: true });
     const data = await FetchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/translators`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/translators`,
       this.props.profile ? this.props.profile.token : ""
     );
     this.setState({ isLoading: false });

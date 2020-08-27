@@ -92,7 +92,7 @@ class App extends React.Component {
     if (profile) {
       console.log("$$$$old profile in update profile : ", profile)
       let data = await FetchData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/projectTranslator/${profile._id}`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/projectTranslator/${profile._id}`,
         profile ? profile.token : ""
       );
 

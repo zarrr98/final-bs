@@ -48,7 +48,7 @@ class MessagePage extends React.Component {
     console.log("@@@profile before updating messages in message page : ", profile)
     this.setState({ isLoading: true });
     let data = await FetchData(
-      `${URL.protocol}://${URL.baseURL}:${URL.port}/user/getmessageandseen/${messageId}`,
+      `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/user/getmessageandseen/${messageId}`,
       profile ? profile.token : ""
     );
     this.setState({ isLoading: false });

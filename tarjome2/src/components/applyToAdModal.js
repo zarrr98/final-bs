@@ -94,7 +94,7 @@ export default class ApplyToAdModal extends React.Component {
     if (!error) {
       this.setState({ isLoading: true });
       const data = await PatchData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/applyForAd`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/applyForAd`,
         { ...values, adId: this.props.choosedAdId },
         this.props.profile ? this.props.profile.token : ""
       );

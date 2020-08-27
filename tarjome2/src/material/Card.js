@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import styles from "./cardStyle.js";
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles(styles); 
 
 export default function Card(props) {
   const classes = useStyles();

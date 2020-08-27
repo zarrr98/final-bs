@@ -16,7 +16,7 @@ export default class TranslatorListGroup extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.translators.length !== this.state.translators.length) {
-      //Perform some operation
+      //Perform some operation 
       this.setState({ translators: nextProps.translators });
     }
   }

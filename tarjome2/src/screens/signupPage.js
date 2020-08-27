@@ -133,7 +133,7 @@ class SignupPage extends React.Component {
     if (!error) {
       this.setState({ isLoading: true });
       const data = await PutData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/adduser`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/adduser`,
         values
       );
       this.setState({ isLoading: false });

@@ -183,7 +183,7 @@ class ResumeForm extends React.Component {
       let sendData = [{ propName: "translatorFields", value: values }];
       this.setState({ isLoading: true });
       const data = await PatchData(
-        `${URL.protocol}://${URL.baseURL}:${URL.port}/users`,
+        `${URL.protocol}://${URL.baseURL}:${URL.port}/${URL.path}/users`,
         sendData,
         profile ? profile.token : ""
       );
