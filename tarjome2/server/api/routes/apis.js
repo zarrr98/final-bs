@@ -46,26 +46,40 @@ router.put("/addfile", upload.single("testFile"), (req, res, next) => {
 //handle clicking on confirmation link
 router.get("/confirmation/:token", confirmEmailToken, (req, res, next) => {
   console.log("req.decodedJWT in handle confirmation => ", req.decodedJWT);
-  let message = messages.welcome(
-    req.decodedJWT.first_name,
-    req.decodedJWT.role
-  );
-  console.log("Weldome message : ", message);
-  let query = { _id: req.decodedJWT.userId };
-  let update = {
-    $set: { confirmed: true },
-    $push: { messages: message },
-  };
-
-  User.update(query, update)
-    .exec()
-    .then((resolve) => {
+  User.findById(req.decodedJWT.userId)
+  .exec()
+  .then((user) => {
+    if (!user.confirmed){
+      let message = messages.welcome(
+        req.decodedJWT.first_name,
+        req.decodedJWT.role
+      );
+      console.log("Weldome message : ", message);
+      let query = { _id: req.decodedJWT.userId };
+      let update = {
+        $set: { confirmed: true },
+        $push: { messages: message },
+      };
+    
+      User.update(query, update)
+        .exec()
+        .then((resolve) => {
+          res.redirect(`${URL.protocol}://${URL.baseURL}:${URL.port}/login`);
+          // res.redirect("http://localhost:3000/login");
+        })
+        .catch((err) => {
+          return res.status(500).json({ error: err, status: 500 });
+        });
+    }else {
       res.redirect(`${URL.protocol}://${URL.baseURL}:${URL.port}/login`);
-      // res.redirect("http://localhost:3000/login");
-    })
-    .catch((err) => {
-      return res.status(500).json({ error: err, status: 500 });
-    });
+    }
+  })
+  .catch((err) => {
+    return res.status(500).json({ error: err, status: 500 });
+  });
+
+
+  
 });
 
 //signup
