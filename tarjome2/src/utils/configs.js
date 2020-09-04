@@ -43,12 +43,12 @@ export const navigationItems = {
 };
 
 export const cardPictures = [
-  require("../assets/images/ax3.png"),
-  require("../assets/images/ax2.jpg"),
   require("../assets/images/ax1.jpg"),
+  require("../assets/images/ax8.jpg"),
+  require("../assets/images/ax5.jpg"),
   require("../assets/images/ax4.jpg"),
-  require("../assets/images/a2.jpg"),
-  require("../assets/images/ax6.jpg"),
+  require("../assets/images/ax9.jpg"),
+  require("../assets/images/ax7.jpg"),
 ];
 
 export const ParticleParams = {

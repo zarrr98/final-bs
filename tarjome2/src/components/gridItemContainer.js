@@ -12,7 +12,7 @@ export default class GridItemContainer extends React.Component {
     cardContent : false,
   }
   render() {
-    return (
+    return ( 
       <GridItem xs={12} sm={12} md={12} className="right-aligned ">
         <Card className = 'extra-margin-top'>
           <CardHeader color="primary" className="center-aligned">

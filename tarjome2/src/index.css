@@ -10,6 +10,8 @@ body {
   direction: rtl;
   min-height: 100% !important;
   height: 100%;
+
+  overflow-x: hidden;
 }
 
 .toolbar {
@@ -382,10 +384,7 @@ body {
   width: 20px;
   height: 25px;
 }
-.card-image {
-  width: auto;
-  height: 170px;
-}
+
 .background {
   background-color: rgb(236, 213, 236);
   min-height: 100%;
@@ -543,9 +542,6 @@ body {
   .info-row {
     flex-direction: column;
   }
-  .card-image {
-    height: 210px;
-  }
   .card-footer-row {
     flex-direction: column;
     align-items: flex-start;
@@ -568,5 +564,197 @@ body {
 @media (min-width: 960px) {
   .alert-container {
     right: 25%;
+  }
+}
+
+/* animated stuff in main page: */
+
+.card-image {
+  width: auto;
+  height: 170px;
+  margin-top: 20px;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.main-page-titles {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.landig-animated-items ul li {
+  list-style-type: none;
+  position: relative;
+  width: 6px;
+  margin: 0 auto;
+  padding-top: 50px;
+  background: rgb(90, 4, 79);
+}
+
+.landig-animated-items ul li::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  -webkit-transform: translateX(-50%) rotate(45deg);
+          transform: translateX(-50%) rotate(45deg);
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  background:rgb(90, 4, 79);
+}
+
+.landig-animated-items ul li div {
+  position: relative;
+  bottom: 0;
+  width: 400px;
+  height: 350px;
+  padding: 20px;
+  background: #212f3d;
+  color: #fff;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.landig-animated-items ul li > div {
+  -webkit-box-shadow: 4px 13px 30px 1px rgba(252, 56, 56, 0.2);
+  box-shadow: 4px 13px 30px 1px rgba(252, 56, 56, 0.2);
+}
+
+.landig-animated-items ul li div time {
+  text-align: center;
+  position: absolute;
+  background: linear-gradient(60deg, #cc3399, #5a044f);
+  color:#fff;
+  width: 90%;
+  left : 5%;
+  height: 50px;
+  top: -15px;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  letter-spacing: 2px;
+
+}
+
+.landig-animated-items ul li div div {
+  height: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.landig-animated-items ul li div div p {
+  text-align: center;
+}
+
+.landig-animated-items ul li div .discovery {
+  margin-right: 10px;
+}
+
+.landig-animated-items ul li:nth-of-type(odd) > div {
+  left: 450px;
+}
+
+.landig-animated-items ul li:nth-of-type(even) > div {
+  left: -60px;
+}
+
+.landig-animated-items ul li div {
+  /* visibility: hidden; */
+  opacity: 0;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.landig-animated-items ul li:nth-of-type(odd) div {
+  -webkit-transform: translate3d(100px, -10px, 0) rotate(10deg);
+          transform: translate3d(100px, -10px, 0) rotate(10deg);
+}
+
+.landig-animated-items ul li:nth-of-type(even) div {
+  -webkit-transform: translate3d(-100px, -10px, 0) rotate(10deg);
+          transform: translate3d(-100px, -10px, 0) rotate(10deg);
+}
+
+.landig-animated-items ul li.in-view div {
+  -webkit-transform: none;
+          transform: none;
+  visibility: visible;
+  opacity: 1;
+}
+
+@media screen and (max-width: 900px) {
+  .landig-animated-items ul li div {
+    width: 300px;
+    /* -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; */
+  }
+  .landig-animated-items ul li div div {
+    /* width: 80%; */
+    margin: 10px;
+  }
+  .landig-animated-items ul li:nth-of-type(odd) > div {
+    left: 320px;
+    
+  }
+  .landig-animated-items ul li:nth-of-type(even) > div {
+    left: -20px;
+  }
+  .card-image {
+    height: 110px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+ 
+  .landig-animated-items ul li {
+    margin-left: 20px;
+  }
+  .landig-animated-items ul li div {
+    width: calc(100vw - 91px);
+  }
+  .landig-animated-items ul li:nth-of-type(even) > div {
+    /* left: 410px; */
+   left : calc(100vw - 50px);
+   
+  }
+  .landig-animated-items ul li:nth-of-type(odd) > div {
+    /* left: 510px; */
+    left : calc(100vw - 50px);
+  }
+  .card-image {
+    height: 150px;
+    width: calc(100vw - 100px);
   }
 }
