@@ -69,7 +69,7 @@ export default class MainPage extends React.Component {
         {/* <main className="main-content"> */}
         {/* <CanvasBackGround/> */}
         <ParticleBackground params={ParticleParams} />
-
+       
 
         <h2 className="main-page-titles">
           {strings.mainPage.employerQuestionTitle}
