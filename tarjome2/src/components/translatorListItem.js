@@ -69,7 +69,7 @@ class TranslatorListItem extends React.Component {
       CardClasses += "hoverable-list-item";
     }
     return (
-      <div>
+      <div className="black-text">
         <Card
           className={CardClasses}
           onClick={this.props.hoverable ? this.showProfile : () => {}}
