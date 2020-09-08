@@ -12,6 +12,7 @@ body {
   height: 100%;
 
   overflow-x: hidden;
+  /* overflow: hidden; */
 }
 
 .toolbar {
@@ -596,6 +597,9 @@ body {
   padding-top: 50px;
   background: rgb(90, 4, 79);
 }
+.landig-animated-items ul {
+  overflow-x: hidden;
+}
 
 .landig-animated-items ul li::after {
   content: "";
@@ -687,7 +691,7 @@ body {
 }
 
 .landig-animated-items ul li div {
-  /* visibility: hidden; */
+  visibility: hidden;
   opacity: 0;
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
