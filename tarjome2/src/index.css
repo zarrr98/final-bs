@@ -599,6 +599,7 @@ body {
 }
 .landig-animated-items ul {
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .landig-animated-items ul li::after {
